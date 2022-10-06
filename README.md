@@ -1,4 +1,4 @@
-# CIS-4375-TeamM-10-StraWin
+# CIS-4375-Team-10-StraWin
 
 
 
