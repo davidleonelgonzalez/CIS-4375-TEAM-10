@@ -1,13 +1,70 @@
-import dbconnector
+import datetime
+from datetime import date
 import flask
 from flask import jsonify
 from flask import request, make_response
 import mysql.connector
 from mysql.connector import Error
 
+def create_connection(host_name, user_name, user_password, database_name):
+    connection = None
+    # try blocks are used for perfect code in case it crashes, and reduces performance
+
+    try:
+        connection = mysql.connector.connect(
+            host = host_name,
+            user = user_name,
+            password = user_password,
+            database = database_name
+        )
+        print("Connection is Good!")
+    except Error as e:
+        print(f"The error '{e}' happened!")
+
+    return connection
+# try block initiates the mysql connector with the four variable string 
+# then printing statment to see if connection was successful with return connection
+# or if error was present with error statement
 
 
-#First thing needed to do was to set a name for application
+# Second function was created to excute querys on the database that connection was established on
+# with function signature connection and query
+def execute_query(connection, query):
+    cursor = connection.cursor()
+    # establish a cursor that points to database connection
+    try:
+        cursor.execute(query)
+        connection.commit()
+        print("Query is Good!")
+    except Error as e:
+        print(f"The error '{e}' happened!")
+# then try block is created to allow cursor to execute and commit data
+# with print statement showing if query was succesful
+# or an error was present with an error statement
+
+
+# Third function was created to read query with same function signature
+def execute_read_query(connection, query):
+    cursor = connection.cursor()
+    result = None
+    # create the cursor again with connection
+    # result yet to be processed
+    try:
+        cursor.execute(query)
+        result = cursor.fetchall()
+        return result
+    except Error as e:
+        print(f"The error '{e}' happened!")
+# try block was once again created to execute query in cursor
+# result from cursor to be fetched
+# result is then returned
+# if error is present then print error statement
+
+connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+# created the connection object for the function create_connection to establish connection
+# using my specifc information for accessing mysql the values from create_connection function allowed for proper format to represent information
+# connection is then made allowing to manage mysql from vs studio continue to manipulate 
+
 
 app = flask.Flask(__name__) # application was set up
 app.config["DEBUG"] = True # setup config debug to see errors when calling endpoints
@@ -69,16 +126,15 @@ def addregion():
 def updateregion():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     request_data = request.get_json()
-    region_id_update = request_data['region_id']
-    new_region_name = request_data['region_name']
+    id_update_region = request_data['region_id']
+    new_region_name = request_data["region_name"]
     update_region = """
     UPDATE region 
     SET region_name = %s
-    WHERE region_id = %s """ % (new_region_name, region_id_update)
+    WHERE region_id = %s """ % (new_region_name, id_update_region)
     execute_query(connection, update_region)
     return "PUT REQUEST IS GOOD!"
 
-#delete works
 
 @app.route('/deleteregion', methods=['DELETE'])
 def deleteregion():
@@ -91,31 +147,79 @@ def deleteregion():
 
 
 
-def create_connection(host_name, user_name, user_password, database_name):
-    connection = None
-    
-    try:
-        connection = mysql.connector.connect(
-            host = host_name,
-            user = user_name,
-            password = user_password,
-            database = database_name
-        )
-        print("Connection is Good!")
-    except Error as e:
-        print(f"The error '{e}' happened!")
 
-    return connection
+#country crud
 
-def execute_query(connection, query):
-    cursor = connection.cursor()
+@app.route('/country/all', methods=['GET'])
+def api_all_coountry():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM country"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    country_results = []
+    for country in rows:
+        country_results.append(country)
 
-    try:
-        cursor.execute(query)
-        connection.commit()
-        print("Query is Good!")
-    except Error as e:
-        print(f"The error '{e}' happened!")
+    return jsonify(country_results)
+
+
+
+@app.route('/country', methods=['GET'])
+def api_country_id():
+    if 'country_id' in request.args:
+        country_id = int(request.args['country_id']) # making an id variable to save it locally when provided into endpoint
+    else:
+        return "Error: NO COUNTRY ID IS INPUTTED!"
+
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM country"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    country_results = []
+    for country in rows:
+        if country["country_id"] == country_id:
+            country_results.append(country)
+
+    return jsonify(country_results)
+
+
+@app.route('/addcountry', methods=['POST'])
+def addcountry():
+    request_data = request.get_json()
+    country_name = request_data['country_name']
+    region_id = request_data['region_id']
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    query = "INSERT INTO country (country_name, region_id) VALUES ('"+country_name+"', '"+region_id+"')" 
+    execute_query(connection, query)
+    return "POST REQUEST IS GOOD!"
+
+#country does not update
+
+@app.route('/updatecountry', methods=['PUT'])
+def updatecountry():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_update_country = request_data['country_id']
+    new_country_name = request_data["country_name"]
+    id_update_region = request_data['region_id']
+    update_country = """
+    UPDATE country 
+    SET country_name = %s, region_id = %s
+    WHERE country_id = %s """ % (new_country_name, id_update_region, id_update_country)
+    execute_query(connection, update_country)
+    return "PUT REQUEST IS GOOD!"
+
+
+@app.route('/deletecountry', methods=['DELETE'])
+def deletecountry():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_country = request_data['country_id']
+    delete_country = "DELETE FROM country WHERE country_id = %s" % (id_country)
+    execute_query(connection, delete_country)
+    return "DELETE REQUEST IS GOOD!"
 
 
 app.run()
