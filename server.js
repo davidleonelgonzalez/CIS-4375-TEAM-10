@@ -1,3 +1,4 @@
+
 var express = require('express');
 var app = express();
 const bodyParser  = require('body-parser');
@@ -12,7 +13,7 @@ app.use(bodyParser.urlencoded());
 //the app will set to view engine  to call ejs in view folder
 app.set('view engine', 'ejs');
 
-
+const PORT = process.env.PORT || 8080;
 //home page start--------------------------------------------------------------------------------------------------------------------------------------------------------
 // Now this is the start of my home page sever use
 
@@ -26,5 +27,6 @@ app.get('/', function(req, res) {
   });
 });
 
-app.listen(1234);
-console.log('StraWin Loading Complete');
+app.listen(PORT, () => {
+  console.log(`StraWin listening at http://localhost:${PORT}/`)
+});
