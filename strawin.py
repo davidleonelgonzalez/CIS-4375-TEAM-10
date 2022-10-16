@@ -349,7 +349,7 @@ def addserver():
     server_number = request_data['server_number']
     server_location = request_data['software_location']
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
-    query = "INSERT INTO server (vendor_id, vm_type, server_number, server_location) VALUES ('"+vendor_id+"', '"+vm_type+"', '"+server_number+"', '"+server_location+"', '"+hardware_type+"')" 
+    query = "INSERT INTO server (vendor_id, vm_type, server_number, server_location) VALUES ('"+vendor_id+"', '"+vm_type+"', '"+server_number+"', '"+server_location+"')" 
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"
 
