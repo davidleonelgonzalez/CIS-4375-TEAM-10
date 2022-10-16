@@ -151,7 +151,7 @@ def deleteregion():
 #country crud
 
 @app.route('/country/all', methods=['GET'])
-def api_all_coountry():
+def api_all_country():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     cursor = connection.cursor(dictionary=True)
     mysql = "SELECT * FROM country"
@@ -220,6 +220,167 @@ def deletecountry():
     delete_country = "DELETE FROM country WHERE country_id = %s" % (id_country)
     execute_query(connection, delete_country)
     return "DELETE REQUEST IS GOOD!"
+
+
+
+
+#vendor crud
+
+@app.route('/vendor/all', methods=['GET'])
+def api_all_vendor():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM vendor"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    vendor_results = []
+    for vendor in rows:
+        vendor_results.append(vendor)
+
+    return jsonify(vendor_results)
+
+
+
+@app.route('/vendor', methods=['GET'])
+def api_vendor_id():
+    if 'vendor_id' in request.args:
+        vendor_id = int(request.args['country_id']) # making an id variable to save it locally when provided into endpoint
+    else:
+        return "Error: NO VENDOR ID IS INPUTTED!"
+
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM vendor"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    vendor_results = []
+    for vendor in rows:
+        if vendor["vendor_id"] == vendor_id:
+            vendor_results.append(vendor)
+
+    return jsonify(vendor_results)
+
+
+@app.route('/addvendor', methods=['POST'])
+def addvendor():
+    request_data = request.get_json()
+    vendor_name = request_data['vendor_name']
+    vendor_phone = request_data['vendor_phone']
+    vendor_email = request_data['vendor_email']
+    software_type = request_data['software_type']
+    hardware_type = request_data['hardware_type']
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    query = "INSERT INTO vendor (vendor_name, vendor_phone, vendor_email, software_type, hardware_type) VALUES ('"+vendor_name+"', '"+vendor_phone+"', '"+vendor_email+"', '"+software_type+"', '"+hardware_type+"')" 
+    execute_query(connection, query)
+    return "POST REQUEST IS GOOD!"
+
+#vendor does not update
+
+@app.route('/updatevendor', methods=['PUT'])
+def updatevendor():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_update_vendor = request_data['vendor_id']
+    new_vendor_name = request_data['vendor_name']
+    new_vendor_phone = request_data['vendor_phone']
+    new_vendor_email = request_data['vendor_email']
+    new_software_type = request_data['software_type']
+    new_hardware_type = request_data['hardware_type']
+    update_vendor = """
+    UPDATE vendor 
+    SET vendor_name = %s, vendor_phone = %s, vendor_email = %s, software_type = %s, hardware_type = %s
+    WHERE vendor_id = %s """ % (new_vendor_name, new_vendor_phone, new_vendor_email,new_software_type,new_hardware_type,id_update_vendor)
+    execute_query(connection, update_vendor)
+    return "PUT REQUEST IS GOOD!"
+
+
+@app.route('/deletevendor', methods=['DELETE'])
+def deletevendor():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_vendor = request_data['vendor_id']
+    delete_vendor = "DELETE FROM vendor WHERE vendor_id = %s" % (id_vendor)
+    execute_query(connection, delete_vendor)
+    return "DELETE REQUEST IS GOOD!"
+
+
+#cloud server crud
+
+@app.route('/server/all', methods=['GET'])
+def api_all_server():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM server"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    server_results = []
+    for server in rows:
+        server_results.append(server)
+
+    return jsonify(server_results)
+
+
+
+@app.route('/server', methods=['GET'])
+def api_server_id():
+    if 'server_id' in request.args:
+        server_id = int(request.args['server_id']) # making an id variable to save it locally when provided into endpoint
+    else:
+        return "Error: NO server ID IS INPUTTED!"
+
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM server"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    server_results = []
+    for server in rows:
+        if server["server_id"] == server_id:
+            server_results.append(server)
+
+    return jsonify(server_results)
+
+
+@app.route('/addserver', methods=['POST'])
+def addserver():
+    request_data = request.get_json()
+    vendor_id = request_data['vendor_id']
+    vm_type = request_data['vm_type']
+    server_number = request_data['server_number']
+    server_location = request_data['software_location']
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    query = "INSERT INTO server (vendor_id, vm_type, server_number, server_location) VALUES ('"+vendor_id+"', '"+vm_type+"', '"+server_number+"', '"+server_location+"', '"+hardware_type+"')" 
+    execute_query(connection, query)
+    return "POST REQUEST IS GOOD!"
+
+#vendor does not update
+
+@app.route('/updatevendor', methods=['PUT'])
+def updatevendor():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_update_server = request_data['server_id']
+    new_vm_type = request_data['vm_type']
+    new_server_number = request_data['server_number']
+    new_server_location = request_data['software_location']
+    update_server = """
+    UPDATE server 
+    SET vm_type = %s, server_number = %s, server_location = %s
+    WHERE server_id = %s """ % (new_vm_type, new_server_number, new_server_location,id_update_server)
+    execute_query(connection, update_server)
+    return "PUT REQUEST IS GOOD!"
+
+
+@app.route('/deleteserver', methods=['DELETE'])
+def deleteserver():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_server = request_data['server_id']
+    delete_server = "DELETE FROM server WHERE server_id = %s" % (id_server)
+    execute_query(connection, delete_server)
+    return "DELETE REQUEST IS GOOD!"
+
+
 
 
 app.run()
