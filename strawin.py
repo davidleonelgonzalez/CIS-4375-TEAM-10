@@ -971,7 +971,7 @@ def api_all_client_employee():
     cursor.execute(mysql)
     rows = cursor.fetchall()
     client_employee_results = []
-    for client in rows:
+    for client_employee in rows:
         client_employee_results.append(client_employee)
 
     return jsonify(client_employee_results)
