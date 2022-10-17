@@ -73,7 +73,8 @@ app.config["DEBUG"] = True # setup config debug to see errors when calling endpo
 def home(): # calls function called home
     return "<h1> Welcome to StraWin</h1>"
 
-
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------
+#1
 #region crud
 
 @app.route('/region/all', methods=['GET'])
@@ -120,7 +121,7 @@ def addregion():
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"
 
-#update does not work yet
+
 
 @app.route('/updateregion', methods=['PUT'])
 def updateregion():
@@ -145,9 +146,12 @@ def deleteregion():
     execute_query(connection, delete_region)
     return "DELETE REQUEST IS GOOD!"
 
+#-------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
+#-------------------------------------------------------------------------------------------------------------------------------------------------
+#2
 #country crud
 
 @app.route('/country/all', methods=['GET'])
@@ -195,7 +199,6 @@ def addcountry():
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"
 
-#country does not update
 
 @app.route('/updatecountry', methods=['PUT'])
 def updatecountry():
@@ -221,9 +224,11 @@ def deletecountry():
     execute_query(connection, delete_country)
     return "DELETE REQUEST IS GOOD!"
 
+#-----------------------------------------------------------------------------------------------------------------------------------------
 
 
-
+#------------------------------------------------------------------------------------------------------------------------------------------
+#3
 #vendor crud
 
 @app.route('/vendor/all', methods=['GET'])
@@ -274,7 +279,7 @@ def addvendor():
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"
 
-#vendor does not update
+
 
 @app.route('/updatevendor', methods=['PUT'])
 def updatevendor():
@@ -303,8 +308,13 @@ def deletevendor():
     execute_query(connection, delete_vendor)
     return "DELETE REQUEST IS GOOD!"
 
+#------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#cloud server crud
+
+
+#------------------------------------------------------------------------------------------------------------------------------------------------------
+#4
+#cloud server crud 
 
 @app.route('/server/all', methods=['GET'])
 def api_all_server():
@@ -353,10 +363,10 @@ def addserver():
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"
 
-#vendor does not update
 
-@app.route('/updatevendor', methods=['PUT'])
-def updatevendor():
+
+@app.route('/updateserver', methods=['PUT'])
+def updateserver():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     request_data = request.get_json()
     id_update_server = request_data['server_id']
@@ -380,8 +390,748 @@ def deleteserver():
     execute_query(connection, delete_server)
     return "DELETE REQUEST IS GOOD!"
 
+#----------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------------
+#5
+#product crud
+
+@app.route('/product/all', methods=['GET'])
+def api_all_product():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM product"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    product_results = []
+    for product in rows:
+        product_results.append(product)
+
+    return jsonify(product_results)
+
+
+
+@app.route('/product', methods=['GET'])
+def api_product_id():
+    if 'product_id' in request.args:
+        product_id = int(request.args['product_id']) # making an id variable to save it locally when provided into endpoint
+    else:
+        return "Error: NO product ID IS INPUTTED!"
+
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM product"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    product_results = []
+    for product in rows:
+        if product["product_id"] == product_id:
+            product_results.append(product)
+
+    return jsonify(product_results)
+
+
+@app.route('/addproduct', methods=['POST'])
+def addproduct():
+    request_data = request.get_json()
+    client_id = request_data['client_id']
+    prospect_id = request_data['prospect_id']
+    server_id = request_data['server_id']
+    product_name = request_data['product_name']
+    product_description = request_data['product_description']
+    category = request_data['category']
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    query = "INSERT INTO product (client_id, prospect_id , server_id, product_name, product_description, category) VALUES ('"+client_id+"', '"+prospect_id+"', '"+server_id+"', '"+product_name+"', '"+product_description+"', '"+category+"')" 
+    execute_query(connection, query)
+    return "POST REQUEST IS GOOD!"
+
+
+
+@app.route('/updateproduct', methods=['PUT'])
+def updateproduct():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_update_product = request_data['product_id']
+    new_client_id = request_data['client_id']
+    new_prospect_id = request_data['prospect_id']
+    new_server_id = request_data['server_id']
+    new_product_name = request_data['product_name']
+    new_product_description = request_data['product_description']
+    new_category = request_data['category']
+    update_product = """
+    UPDATE product 
+    SET client_id = %s, prospect_id = %s, server_id = %s, product_name = %s, product_description = %s, category = %s
+    WHERE product_id = %s """ % (new_client_id, new_prospect_id, new_server_id, new_product_name, new_product_description, new_category,id_update_product)
+    execute_query(connection, update_product)
+    return "PUT REQUEST IS GOOD!"
+
+
+@app.route('/deleteproduct', methods=['DELETE'])
+def deleteproduct():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_product = request_data['product_id']
+    delete_product = "DELETE FROM product WHERE product_id = %s" % (id_product)
+    execute_query(connection, delete_product)
+    return "DELETE REQUEST IS GOOD!"
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#6
+#department crud
+
+@app.route('/department/all', methods=['GET'])
+def api_all_department():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM department"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    department_results = []
+    for department in rows:
+        department_results.append(department)
+
+    return jsonify(department_results)
+
+
+
+@app.route('/department', methods=['GET'])
+def api_department_id():
+    if 'department_id' in request.args:
+        department_id = int(request.args['department_id']) # making an id variable to save it locally when provided into endpoint
+    else:
+        return "Error: NO department ID IS INPUTTED!"
+
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM department"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    department_results = []
+    for department in rows:
+        if department["department_id"] == department_id:
+            department_results.append(department)
+
+    return jsonify(department_results)
+
+
+@app.route('/adddepartment', methods=['POST'])
+def adddepartment():
+    request_data = request.get_json()
+    department_name = request_data['department_name']
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    query = "INSERT INTO department (department_name) VALUES ('"+department_name+"')" 
+    execute_query(connection, query)
+    return "POST REQUEST IS GOOD!"
+
+
+
+@app.route('/updatedepartment', methods=['PUT'])
+def updatedepartment():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_update_department = request_data['department_id']
+    new_department_name = request_data['department_name']
+    update_department = """
+    UPDATE department 
+    SET product_name = %s
+    WHERE department_id = %s """ % (new_department_name, id_update_department)
+    execute_query(connection, update_department)
+    return "PUT REQUEST IS GOOD!"
+
+
+@app.route('/deletedepartment', methods=['DELETE'])
+def deletedepartment():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_department = request_data['department_id']
+    delete_department = "DELETE FROM department WHERE department_id = %s" % (id_department)
+    execute_query(connection, delete_department)
+    return "DELETE REQUEST IS GOOD!"
+
+#----------------------------------------------------------------------------------------------------------------------------------------
+
+
+#----------------------------------------------------------------------------------------------------------------------------------------
+
+
+#7
+#employee status crud
+
+@app.route('/employee_status/all', methods=['GET'])
+def api_all_employee_status():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM employee_status"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    employee_status_results = []
+    for employee_status in rows:
+        employee_status_results.append(employee_status)
+
+    return jsonify(employee_status_results)
+
+
+
+@app.route('/employee_status', methods=['GET'])
+def api_employee_status_id():
+    if 'employee_status_id' in request.args:
+        employee_status_id = int(request.args['employee_status_id']) # making an id variable to save it locally when provided into endpoint
+    else:
+        return "Error: NO employee_status ID IS INPUTTED!"
+
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM employee_status"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    employee_status_results = []
+    for employee_status in rows:
+        if employee_status["employee_status_id"] == employee_status_id:
+            employee_status_results.append(employee_status)
+
+    return jsonify(employee_status_results)
+
+
+@app.route('/addemployee_status', methods=['POST'])
+def addemployee_status():
+    request_data = request.get_json()
+    employee_status_name = request_data['employee_status_name']
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    query = "INSERT INTO employee_status (employee_status_name) VALUES ('"+employee_status_name+"')" 
+    execute_query(connection, query)
+    return "POST REQUEST IS GOOD!"
+
+
+
+@app.route('/updateemployee_status', methods=['PUT'])
+def updateemployee_status():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_update_employee_status = request_data['employee_status_id']
+    new_employee_status_name = request_data['employee_status_name']
+    update_employee_status = """
+    UPDATE employee_status 
+    SET employee_status_name = %s
+    WHERE employee_status_id = %s """ % (new_employee_status_name, id_update_employee_status)
+    execute_query(connection, update_employee_status)
+    return "PUT REQUEST IS GOOD!"
+
+
+@app.route('/deleteemployee_status', methods=['DELETE'])
+def deleteemployee_status():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_employee_status = request_data['employee_status_id']
+    delete_employee_status = "DELETE FROM employee_status WHERE employee_status_id = %s" % (id_employee_status)
+    execute_query(connection, delete_employee_status)
+    return "DELETE REQUEST IS GOOD!"
+
+#----------------------------------------------------------------------------------------------------------------------------------------
+
+
+#-----------------------------------------------------------------------------------------------------------------------------------------
+#8
+#client status crud
+
+
+@app.route('/client_status/all', methods=['GET'])
+def api_all_client_status():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM client_status"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    client_status_results = []
+    for client_status in rows:
+        client_status_results.append(client_status)
+
+    return jsonify(client_status_results)
+
+
+
+@app.route('/client_status', methods=['GET'])
+def api_client_status_id():
+    if 'client_status_id' in request.args:
+        client_status_id = int(request.args['client_status_id']) # making an id variable to save it locally when provided into endpoint
+    else:
+        return "Error: NO client_status ID IS INPUTTED!"
+
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM client_status"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    client_status_results = []
+    for client_status in rows:
+        if client_status["client_status_id"] == client_status_id:
+            client_status_results.append(client_status)
+
+    return jsonify(client_status_results)
+
+
+@app.route('/addclient_status', methods=['POST'])
+def addclient_status():
+    request_data = request.get_json()
+    client_status_name = request_data['client_status_name']
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    query = "INSERT INTO client_status (client_status_name) VALUES ('"+client_status_name+"')" 
+    execute_query(connection, query)
+    return "POST REQUEST IS GOOD!"
+
+
+
+@app.route('/updateclient_status', methods=['PUT'])
+def updateclient_status():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_update_client_status = request_data['client_status_id']
+    new_client_status_name = request_data['client_status_name']
+    update_client_status = """
+    UPDATE client_status 
+    SET client_status_name = %s
+    WHERE client_status_id = %s """ % (new_client_status_name, id_update_client_status)
+    execute_query(connection, update_client_status)
+    return "PUT REQUEST IS GOOD!"
+
+
+@app.route('/deleteclient_status', methods=['DELETE'])
+def deleteclient_status():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_client_status = request_data['client_status_id']
+    delete_client_status = "DELETE FROM client_status WHERE client_status_id = %s" % (id_client_status)
+    execute_query(connection, delete_client_status)
+    return "DELETE REQUEST IS GOOD!"
+
+#--------------------------------------------------------------------------------------------------------------------------------------------
+
+
+#---------------------------------------------------------------------------------------------------------------------------------------------
+#9
+#sale crud
+
+
+@app.route('/sales/all', methods=['GET'])
+def api_all_sales():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM sales"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    sales_results = []
+    for sales in rows:
+        sales_results.append(sales)
+
+    return jsonify(sales_results)
+
+
+
+@app.route('/sales', methods=['GET'])
+def api_sales_id():
+    if 'sales_id' in request.args:
+        sales_id = int(request.args['sales_id']) # making an id variable to save it locally when provided into endpoint
+    else:
+        return "Error: NO sales ID IS INPUTTED!"
+
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM sales"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    sales_results = []
+    for sales in rows:
+        if sales["sales_id"] == sales_id:
+            sales_results.append(sales)
+
+    return jsonify(sales_results)
+
+
+@app.route('/addsales', methods=['POST'])
+def addsales():
+    request_data = request.get_json()
+    employee_id = request_data['employee_id']
+    prospect_id = request_data['prospect_id']
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    query = "INSERT INTO sales (employee_id, propsect_id) VALUES ('"+employee_id+"', '"+prospect_id+"')" 
+    execute_query(connection, query)
+    return "POST REQUEST IS GOOD!"
+
+
+
+@app.route('/updatesales', methods=['PUT'])
+def updatesales():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_update_sales = request_data['sales_id']
+    new_employee_id = request_data['employee_id']
+    new_prospect_id = request_data['prospect_id']
+    update_sales = """
+    UPDATE sales 
+    SET employee_id = %s, prospect_id = %s
+    WHERE sales_id = %s """ % (new_employee_id, new_prospect_id, id_update_sales)
+    execute_query(connection, update_sales)
+    return "PUT REQUEST IS GOOD!"
+
+
+@app.route('/deletesales', methods=['DELETE'])
+def deletesales():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_sales = request_data['sales_id']
+    delete_sales = "DELETE FROM sales WHERE sales_id = %s" % (id_sales)
+    execute_query(connection, delete_sales)
+    return "DELETE REQUEST IS GOOD!"
+
+#----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------
+#10
+#airline prospect crud
+
+
+@app.route('/prospect/all', methods=['GET'])
+def api_all_prospect():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM airline_prospect"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    prospect_results = []
+    for prospect in rows:
+        prospect_results.append(prospect)
+
+    return jsonify(prospect_results)
+
+
+
+@app.route('/prospect', methods=['GET'])
+def api_prospect_id():
+    if 'prospect_id' in request.args:
+        prospect_id = int(request.args['prospect_id']) # making an id variable to save it locally when provided into endpoint
+    else:
+        return "Error: NO prospect ID IS INPUTTED!"
+
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM airline_prospect"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    prospect_results = []
+    for prospect in rows:
+        if prospect["prospect_id"] == prospect_id:
+            prospect_results.append(prospect)
+
+    return jsonify(prospect_results)
+
+
+@app.route('/addprospect', methods=['POST'])
+def addprospect():
+    request_data = request.get_json()
+    client_status_id = request_data['client_status_id']
+    country_id = request_data['country_id']
+    region_id = request_data['region_id']
+    airline_name = request_data['airline_name']
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    query = "INSERT INTO airline_prospect (client_status_id, country_id, region_id, airline_name) VALUES ('"+client_status_id+"', '"+country_id+"', '"+region_id+"', '"+airline_name+"')" 
+    execute_query(connection, query)
+    return "POST REQUEST IS GOOD!"
+
+
+
+@app.route('/updatprospect', methods=['PUT'])
+def updateprospect():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_update_prospect = request_data['prospect_id']
+    new_client_status_id = request_data['client_status_id']
+    new_country_id = request_data['country_id']
+    new_region_id = request_data['region_id']
+    new_airline_name = request_data['airline_name']
+    update_prospect = """
+    UPDATE airline_prospect 
+    SET client_status_id = %s, country_id = %s, region_id = %s, airline_name = %s
+    WHERE prospect_id = %s """ % (new_client_status_id, new_country_id, new_region_id, new_airline_name, id_update_prospect)
+    execute_query(connection, update_prospect)
+    return "PUT REQUEST IS GOOD!"
+
+
+@app.route('/deleteprospect', methods=['DELETE'])
+def deleteprospect():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_prospect = request_data['prospect_id']
+    delete_prospect = "DELETE FROM airline_prospect WHERE prospect_id = %s" % (id_prospect)
+    execute_query(connection, delete_prospect)
+    return "DELETE REQUEST IS GOOD!"
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------
+#11
+#airline client crud
+
+@app.route('/client/all', methods=['GET'])
+def api_all_client():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM airline_client"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    client_results = []
+    for client in rows:
+        client_results.append(client)
+
+    return jsonify(client_results)
+
+
+
+@app.route('/client', methods=['GET'])
+def api_client_id():
+    if 'client_id' in request.args:
+        client_id = int(request.args['client_id']) # making an id variable to save it locally when provided into endpoint
+    else:
+        return "Error: NO client ID IS INPUTTED!"
+
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM airline_client"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    client_results = []
+    for client in rows:
+        if client["client_id"] == client_id:
+            client_results.append(client)
+
+    return jsonify(client_results)
+
+
+@app.route('/addclient', methods=['POST'])
+def addclient():
+    request_data = request.get_json()
+    client_status_id = request_data['client_status_id']
+    country_id = request_data['country_id']
+    region_id = request_data['region_id']
+    airline_name = request_data['airline_name']
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    query = "INSERT INTO airline_client (client_status_id, country_id, region_id, airline_name) VALUES ('"+client_status_id+"', '"+country_id+"', '"+region_id+"', '"+airline_name+"')" 
+    execute_query(connection, query)
+    return "POST REQUEST IS GOOD!"
+
+
+
+@app.route('/updatclient', methods=['PUT'])
+def updateclient():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_update_client = request_data['client_id']
+    new_client_status_id = request_data['client_status_id']
+    new_country_id = request_data['country_id']
+    new_region_id = request_data['region_id']
+    new_airline_name = request_data['airline_name']
+    update_client = """
+    UPDATE airline_client 
+    SET client_status_id = %s, country_id = %s, region_id = %s, airline_name = %s
+    WHERE client_id = %s """ % (new_client_status_id, new_country_id, new_region_id, new_airline_name, id_update_client)
+    execute_query(connection, update_client)
+    return "PUT REQUEST IS GOOD!"
+
+
+@app.route('/deleteclient', methods=['DELETE'])
+def deleteclient():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_client = request_data['client_id']
+    delete_client = "DELETE FROM airline_client WHERE client_id = %s" % (id_client)
+    execute_query(connection, delete_client)
+    return "DELETE REQUEST IS GOOD!"
+
+
+#---------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+#----------------------------------------------------------------------------------------------------------------------------------------------
+#12
+#airline client employee crud
+
+
+@app.route('/client_employee/all', methods=['GET'])
+def api_all_client_employee():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM airline_client_employee"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    client_employee_results = []
+    for client in rows:
+        client_employee_results.append(client_employee)
+
+    return jsonify(client_employee_results)
+
+
+
+@app.route('/client_employee', methods=['GET'])
+def api_client_employee_id():
+    if 'client_employee_id' in request.args:
+        client_employee_id = int(request.args['client_employee_id']) # making an id variable to save it locally when provided into endpoint
+    else:
+        return "Error: NO client_employee ID IS INPUTTED!"
+
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM airline_client_employee"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    client_employee_results = []
+    for client_employee in rows:
+        if client_employee["client_employee_id"] == client_employee_id:
+            client_employee_results.append(client_employee)
+
+    return jsonify(client_employee_results)
+
+
+@app.route('/addclient_employee', methods=['POST'])
+def addclient_employee():
+    request_data = request.get_json()
+    client_id = request_data['client_id']
+    employee_id = request_data['employee_id']
+    first_name = request_data['first_name']
+    last_name = request_data['last_name']
+    phone_number = request_data['phone_number']
+    email = request_data['email']
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    query = "INSERT INTO airline_client_employee (client_id, employee_id, first_name, last_name, phone_number, email) VALUES ('"+client_id+"', '"+employee_id+"', '"+first_name+"', '"+last_name+"', '"+phone_number+"', '"+email+"')" 
+    execute_query(connection, query)
+    return "POST REQUEST IS GOOD!"
+
+
+
+@app.route('/updatclient_employee', methods=['PUT'])
+def updateclient_employee():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_update_client_employee = request_data['client_employee_id']
+    new_client_id = request_data['client_id']
+    new_employee_id = request_data['employee_id']
+    new_first_name = request_data['first_name']
+    new_last_name = request_data['last_name']
+    new_phone_number = request_data['phone_number']
+    new_email = request_data['email']
+    update_client_employee = """
+    UPDATE airline_client_employee 
+    SET client_id = %s, employee_id = %s, first_name = %s, last_name = %s, phone_number = %s, email = %s
+    WHERE client_employee_id = %s """ % (new_client_id, new_employee_id, new_first_name, new_last_name, new_phone_number, new_email, id_update_client_employee)
+    execute_query(connection, update_client_employee)
+    return "PUT REQUEST IS GOOD!"
+
+
+@app.route('/deleteclient_employee', methods=['DELETE'])
+def deleteclient_employee():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_client_employee = request_data['client_employee_id']
+    delete_client_employee = "DELETE FROM airline_client_employee WHERE client_employee_id = %s" % (id_client_employee)
+    execute_query(connection, delete_client_employee)
+    return "DELETE REQUEST IS GOOD!"
+
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#13
+#employee crud
+
+
+@app.route('/employee/all', methods=['GET'])
+def api_all_employee():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM employee"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    employee_results = []
+    for employee in rows:
+        employee_results.append(employee)
+
+    return jsonify(employee_results)
+
+
+
+@app.route('/employee', methods=['GET'])
+def api_employee_id():
+    if 'employee_id' in request.args:
+        employee_id = int(request.args['employee_id']) # making an id variable to save it locally when provided into endpoint
+    else:
+        return "Error: NO employee ID IS INPUTTED!"
+
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM employee"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    employee_results = []
+    for employee in rows:
+        if employee["employee_id"] == employee_id:
+            employee_results.append(employee)
+
+    return jsonify(employee_results)
+
+
+@app.route('/addemployee', methods=['POST'])
+def addemployee():
+    request_data = request.get_json()
+    employee_status_id = request_data['employee_status_id']
+    department_id = request_data['department_id']
+    country_id = request_data['country_id']
+    region_id = request_data['region_id']
+    first_name = request_data['first_name']
+    last_name = request_data['last_name']
+    phone_number = request_data['phone_number']
+    email = request_data['email']
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    query = "INSERT INTO employee (employee_status_id, department_id, country_id, region_id, first_name, last_name, phone_number, email) VALUES ('"+employee_status_id+"', '"+department_id+"', '"+country_id+"', '"+region_id+"','"+first_name+"', '"+last_name+"', '"+phone_number+"', '"+email+"')" 
+    execute_query(connection, query)
+    return "POST REQUEST IS GOOD!"
+
+
+
+@app.route('/updatemployee', methods=['PUT'])
+def updateemployee():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_update_employee = request_data['employee_id']
+    new_employee_status_id = request_data['employee_status_id']
+    new_department_id = request_data['department_id']
+    new_country_id = request_data['country_id']
+    new_region_id = request_data['region_id']
+    new_first_name = request_data['first_name']
+    new_last_name = request_data['last_name']
+    new_phone_number = request_data['phone_number']
+    new_email = request_data['email']
+    update_employee = """
+    UPDATE employee 
+    SET employee_status_id = %s, department_id = %s, country_id = %s, region_id = %s, first_name = %s, last_name = %s, phone_number = %s, email = %s
+    WHERE client_employee_id = %s """ % (new_employee_status_id, new_department_id, new_country_id, new_region_id, new_first_name, new_last_name, new_phone_number, new_email, id_update_employee)
+    execute_query(connection, update_employee)
+    return "PUT REQUEST IS GOOD!"
+
+
+@app.route('/deleteemployee', methods=['DELETE'])
+def deleteemployee():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_employee = request_data['employee_id']
+    delete_employee = "DELETE FROM employee WHERE employee_id = %s" % (id_employee)
+    execute_query(connection, delete_employee)
+    return "DELETE REQUEST IS GOOD!"
 
 app.run()
 
