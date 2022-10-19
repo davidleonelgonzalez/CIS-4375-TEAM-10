@@ -73,6 +73,40 @@ app.config["DEBUG"] = True # setup config debug to see errors when calling endpo
 def home(): # calls function called home
     return "<h1> Welcome to StraWin</h1>"
 
+#------------------------------------------------------------------------------------------------------------------------------------------------------
+#User Login and Password
+
+
+authorizedusers = [
+    {
+        #default user
+        'username': 'username',
+        'password': 'password',
+        'role': 'user'
+    },
+    {
+        #admin user
+        'username': 'strawin',
+        'password': 'LithiumITConsulting4375',
+        'role': 'admin'
+    }
+
+]
+
+
+
+@app.route('/login', methods=['GET'])
+def login():
+    username = request.headers['username']
+    password = request.headers['password']
+    for au in authorizedusers:
+        if au['username'] == username and au['password'] == password:
+            return 'Authorized with priviledge of: ' + au['role']
+    return 'YOU ARE NOT AUTHORIZED'
+
+
+
+
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #1
 #region crud
