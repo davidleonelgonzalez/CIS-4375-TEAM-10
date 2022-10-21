@@ -11,10 +11,7 @@
     <!--Body tag indicates the class is a container for the following code below-->
 <body class="container">
 
-    <header>
 
-        <%- include('../partials/header'); %>
-    </header>
 <!-- Then created a header tag to contain the code information from the partials folder/ header file 
 to use the header style for this page as for all the other pages to show consistency-->
 
@@ -22,6 +19,23 @@ to use the header style for this page as for all the other pages to show consist
 The div tag is opened to set class as jumbotron and style background color of page.
 Using headings to display messages for the page to have, and tagline from server file -->
     <main>
+        <div>
+            <form action="/login" methods=""post">
+                <h2>Please Log In:</h2>
+                <input type="text" id="username" name="username" class=""form-control" placeholder="Username" required 
+                    autofocus>
+                <input type="password" id="inputpassword" name="password" class=""form-control" placeholder="Password" 
+                    required >
+                <div class="checkbox">
+                    <label>
+                        <input name="remember-me" type="checkbox"> Remember me
+
+                    </label>
+                </div>
+                <input class="btn btn-lg btn-primary btn-block" type="submit">
+            </form>
+        </div>
+
 
     </main>
 <!-- Using <p> and <strong> tags to add to the design display of the messages-->
