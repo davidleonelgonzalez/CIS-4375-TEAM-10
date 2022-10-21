@@ -133,7 +133,7 @@ app.get('/country', function(req, res) {
 
 app.post('/addcountry', function(req, res){
   var addCountryName = req.body.country_name;
-  var addRegionID =req.body.region_id;
+  var addRegionID = req.body.region_id;
 
   axios.post(`http://127.0.0.1:5000/addcountry`,{
     
@@ -176,7 +176,7 @@ app.delete('/deletecountry', function(req, res){
 
   axios.delete(`http://127.0.0.1:5000/deletecountry`,{
       id:5000,
-      country_name: deleteCountryName
+      country_name: deleteCountryName,
       region_id: deleteRegionID
 
     })
@@ -208,10 +208,10 @@ app.get('/vendor', function(req, res) {
 
 app.post('/addvendor', function(req, res){
   var addVendorName = req.body.vendor_name;
-  var addVendorPhone =req.body.vendor_phone;
-  var addVendorEmail =req.body.vendor_email;
-  var addSoftwareType =req.body.software_type;
-  var addHardwareType =req.body.hardware_type;
+  var addVendorPhone = req.body.vendor_phone;
+  var addVendorEmail = req.body.vendor_email;
+  var addSoftwareType = req.body.software_type;
+  var addHardwareType = req.body.hardware_type;
 
   axios.post(`http://127.0.0.1:5000/addvendor`,{
     
@@ -233,10 +233,10 @@ app.post('/addvendor', function(req, res){
 
 app.put('/updatevendor', function(req, res){
   var updateVendorName = req.body.vendor_name;
-  var updateVendorPhone =req.body.vendor_phone;
-  var updateVendorEmail =req.body.vendor_email;
-  var updateSoftwareType =req.body.software_type;
-  var updateHardwareType =req.body.hardware_type;
+  var updateVendorPhone = req.body.vendor_phone;
+  var updateVendorEmail = req.body.vendor_email;
+  var updateSoftwareType = req.body.software_type;
+  var updateHardwareType = req.body.hardware_type;
 
 
   axios.put(`http://127.0.0.1:5000/updatevendor`,{
@@ -259,10 +259,10 @@ app.put('/updatevendor', function(req, res){
 
 app.delete('/deletevendor', function(req, res){
   var deleteVendorName = req.body.vendor_name;
-  var deleteVendorPhone =req.body.vendor_phone;
-  var deleteVendorEmail =req.body.vendor_email;
-  var deleteSoftwareType =req.body.software_type;
-  var deleteHardwareType =req.body.hardware_type;
+  var deleteVendorPhone = req.body.vendor_phone;
+  var deleteVendorEmail = req.body.vendor_email;
+  var deleteSoftwareType = req.body.software_type;
+  var deleteHardwareType = req.body.hardware_type;
 
 
   axios.delete(`http://127.0.0.1:5000/deletevendor`,{
