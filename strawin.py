@@ -261,8 +261,87 @@ def deletecountry():
 #-----------------------------------------------------------------------------------------------------------------------------------------
 
 
-#------------------------------------------------------------------------------------------------------------------------------------------
+
+#-----------------------------------------------------------------------------------------------------------------------------------------
 #3
+#state crud
+
+@app.route('/state/all', methods=['GET'])
+def api_all_state():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM state_providence"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    state_results = []
+    for state in rows:
+        state_results.append(state)
+
+    return jsonify(state_results)
+
+
+
+@app.route('/state', methods=['GET'])
+def api_state_id():
+    if 'state_id' in request.args:
+        state_id = int(request.args['state_id']) # making an id variable to save it locally when provided into endpoint
+    else:
+        return "Error: NO STATE ID IS INPUTTED!"
+
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM state_providence"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    state_results = []
+    for state in rows:
+        if state["state_id"] == state_id:
+            state_results.append(state)
+
+    return jsonify(state_results)
+
+
+@app.route('/addstate', methods=['POST'])
+def addstate():
+    request_data = request.get_json()
+    state_providence_name = request_data['state_providence_name']
+    country_id = request_data['country_id']
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    query = "INSERT INTO state_providence (state_providence_name, country_id) VALUES ('"+state_providence_name+"', '"+country_id+"')" 
+    execute_query(connection, query)
+    return "POST REQUEST IS GOOD!"
+
+
+@app.route('/updatestate', methods=['PUT'])
+def updatestate():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_update_state = request_data['state_id']
+    new_state_providence_name = request_data["state_providence_name"]
+    id_update_country = request_data['country_id']
+    update_state = """
+    UPDATE state_providence 
+    SET state_providence_name = %s, country_id = %s
+    WHERE state_id = %s """ % (new_state_providence_name, id_update_country, id_update_state)
+    execute_query(connection, update_state)
+    return "PUT REQUEST IS GOOD!"
+
+
+@app.route('/deletestate', methods=['DELETE'])
+def deletestate():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    id_state = request_data['state_id']
+    delete_state = "DELETE FROM state_providence WHERE state_id = %s" % (id_state)
+    execute_query(connection, delete_state)
+    return "DELETE REQUEST IS GOOD!"
+
+#-----------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+#------------------------------------------------------------------------------------------------------------------------------------------
+#4
 #vendor crud
 
 @app.route('/vendor/all', methods=['GET'])
@@ -347,14 +426,14 @@ def deletevendor():
 
 
 #------------------------------------------------------------------------------------------------------------------------------------------------------
-#4
+#5
 #cloud server crud 
 
 @app.route('/server/all', methods=['GET'])
 def api_all_server():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     cursor = connection.cursor(dictionary=True)
-    mysql = "SELECT * FROM server"
+    mysql = "SELECT * FROM cloud_server"
     cursor.execute(mysql)
     rows = cursor.fetchall()
     server_results = []
@@ -370,11 +449,11 @@ def api_server_id():
     if 'server_id' in request.args:
         server_id = int(request.args['server_id']) # making an id variable to save it locally when provided into endpoint
     else:
-        return "Error: NO server ID IS INPUTTED!"
+        return "Error: NO SERVER ID IS INPUTTED!"
 
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     cursor = connection.cursor(dictionary=True)
-    mysql = "SELECT * FROM server"
+    mysql = "SELECT * FROM cloud_server"
     cursor.execute(mysql)
     rows = cursor.fetchall()
     server_results = []
@@ -388,12 +467,12 @@ def api_server_id():
 @app.route('/addserver', methods=['POST'])
 def addserver():
     request_data = request.get_json()
-    vendor_id = request_data['vendor_id']
     vm_type = request_data['vm_type']
     server_number = request_data['server_number']
     server_location = request_data['software_location']
+    vendor_id = request_data['vendor_id']
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
-    query = "INSERT INTO server (vendor_id, vm_type, server_number, server_location) VALUES ('"+vendor_id+"', '"+vm_type+"', '"+server_number+"', '"+server_location+"')" 
+    query = "INSERT INTO cloud_server (vm_type, server_number, server_location, vendor_id) VALUES ('"+vm_type+"', '"+server_number+"', '"+server_location+"', '"+vendor_id+"')" 
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"
 
@@ -407,8 +486,9 @@ def updateserver():
     new_vm_type = request_data['vm_type']
     new_server_number = request_data['server_number']
     new_server_location = request_data['software_location']
+    new_vendor_id = request_data['vendor_id']
     update_server = """
-    UPDATE server 
+    UPDATE cloud_server 
     SET vm_type = %s, server_number = %s, server_location = %s
     WHERE server_id = %s """ % (new_vm_type, new_server_number, new_server_location,id_update_server)
     execute_query(connection, update_server)
@@ -420,7 +500,7 @@ def deleteserver():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     request_data = request.get_json()
     id_server = request_data['server_id']
-    delete_server = "DELETE FROM server WHERE server_id = %s" % (id_server)
+    delete_server = "DELETE FROM cloud_server WHERE server_id = %s" % (id_server)
     execute_query(connection, delete_server)
     return "DELETE REQUEST IS GOOD!"
 
@@ -428,9 +508,8 @@ def deleteserver():
 
 
 
-
 #-----------------------------------------------------------------------------------------------------------------------------------------------------
-#5
+#6
 #product crud
 
 @app.route('/product/all', methods=['GET'])
@@ -453,7 +532,7 @@ def api_product_id():
     if 'product_id' in request.args:
         product_id = int(request.args['product_id']) # making an id variable to save it locally when provided into endpoint
     else:
-        return "Error: NO product ID IS INPUTTED!"
+        return "Error: NO PRODUCT ID IS INPUTTED!"
 
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     cursor = connection.cursor(dictionary=True)
@@ -471,14 +550,15 @@ def api_product_id():
 @app.route('/addproduct', methods=['POST'])
 def addproduct():
     request_data = request.get_json()
-    client_id = request_data['client_id']
-    prospect_id = request_data['prospect_id']
-    server_id = request_data['server_id']
+    product_sku = request.date['product_sku']
     product_name = request_data['product_name']
     product_description = request_data['product_description']
     category = request_data['category']
+    server_id = request_data['server_id']
+    client_id = request_data['client_id']
+    prospect_id = request_data['prospect_id']
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
-    query = "INSERT INTO product (client_id, prospect_id , server_id, product_name, product_description, category) VALUES ('"+client_id+"', '"+prospect_id+"', '"+server_id+"', '"+product_name+"', '"+product_description+"', '"+category+"')" 
+    query = "INSERT INTO product (product_sku, product_name, product_description, category, server_id, client_id, prospect_id) VALUES ('"+product_sku+"', '"+product_name+"', '"+product_description+"', '"+category+"', '"+server_id+"', '"+client_id+"', '"+prospect_id+"')" 
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"
 
@@ -489,16 +569,17 @@ def updateproduct():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     request_data = request.get_json()
     id_update_product = request_data['product_id']
-    new_client_id = request_data['client_id']
-    new_prospect_id = request_data['prospect_id']
-    new_server_id = request_data['server_id']
+    new_product_sku = request_data['product_sku']
     new_product_name = request_data['product_name']
     new_product_description = request_data['product_description']
     new_category = request_data['category']
+    new_server_id = request_data['server_id']
+    new_client_id = request_data['client_id']
+    new_prospect_id = request_data['prospect_id']
     update_product = """
     UPDATE product 
-    SET client_id = %s, prospect_id = %s, server_id = %s, product_name = %s, product_description = %s, category = %s
-    WHERE product_id = %s """ % (new_client_id, new_prospect_id, new_server_id, new_product_name, new_product_description, new_category,id_update_product)
+    SET product_sku = %s, product_name = %s, product_description = %s, category = %s, server_id = %s, client_id = %s, prospect_id = %s
+    WHERE product_id = %s """ % (new_product_sku, new_product_name, new_product_description, new_category, new_server_id, new_client_id, new_prospect_id, id_update_product)
     execute_query(connection, update_product)
     return "PUT REQUEST IS GOOD!"
 
@@ -514,8 +595,9 @@ def deleteproduct():
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#6
+#7
 #department crud
 
 @app.route('/department/all', methods=['GET'])
@@ -538,7 +620,7 @@ def api_department_id():
     if 'department_id' in request.args:
         department_id = int(request.args['department_id']) # making an id variable to save it locally when provided into endpoint
     else:
-        return "Error: NO department ID IS INPUTTED!"
+        return "Error: NO DEPARTMENT ID IS INPUTTED!"
 
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     cursor = connection.cursor(dictionary=True)
@@ -572,7 +654,7 @@ def updatedepartment():
     new_department_name = request_data['department_name']
     update_department = """
     UPDATE department 
-    SET product_name = %s
+    SET department_name = %s
     WHERE department_id = %s """ % (new_department_name, id_update_department)
     execute_query(connection, update_department)
     return "PUT REQUEST IS GOOD!"
@@ -590,10 +672,10 @@ def deletedepartment():
 #----------------------------------------------------------------------------------------------------------------------------------------
 
 
+
 #----------------------------------------------------------------------------------------------------------------------------------------
 
-
-#7
+#8
 #employee status crud
 
 @app.route('/employee_status/all', methods=['GET'])
@@ -616,7 +698,7 @@ def api_employee_status_id():
     if 'employee_status_id' in request.args:
         employee_status_id = int(request.args['employee_status_id']) # making an id variable to save it locally when provided into endpoint
     else:
-        return "Error: NO employee_status ID IS INPUTTED!"
+        return "Error: NO EMPLOYEE STATUS ID IS INPUTTED!"
 
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     cursor = connection.cursor(dictionary=True)
@@ -668,8 +750,9 @@ def deleteemployee_status():
 #----------------------------------------------------------------------------------------------------------------------------------------
 
 
+
 #-----------------------------------------------------------------------------------------------------------------------------------------
-#8
+#9
 #client status crud
 
 
@@ -693,7 +776,7 @@ def api_client_status_id():
     if 'client_status_id' in request.args:
         client_status_id = int(request.args['client_status_id']) # making an id variable to save it locally when provided into endpoint
     else:
-        return "Error: NO client_status ID IS INPUTTED!"
+        return "Error: NO CLIENT STATUS ID IS INPUTTED!"
 
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     cursor = connection.cursor(dictionary=True)
@@ -745,9 +828,10 @@ def deleteclient_status():
 #--------------------------------------------------------------------------------------------------------------------------------------------
 
 
+
 #---------------------------------------------------------------------------------------------------------------------------------------------
-#9
-#sale crud
+#10
+#sales crud
 
 
 @app.route('/sales/all', methods=['GET'])
@@ -770,7 +854,7 @@ def api_sales_id():
     if 'sales_id' in request.args:
         sales_id = int(request.args['sales_id']) # making an id variable to save it locally when provided into endpoint
     else:
-        return "Error: NO sales ID IS INPUTTED!"
+        return "Error: NO SALES ID IS INPUTTED!"
 
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     cursor = connection.cursor(dictionary=True)
@@ -826,7 +910,7 @@ def deletesales():
 
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------
-#10
+#11
 #airline prospect crud
 
 
@@ -850,7 +934,7 @@ def api_prospect_id():
     if 'prospect_id' in request.args:
         prospect_id = int(request.args['prospect_id']) # making an id variable to save it locally when provided into endpoint
     else:
-        return "Error: NO prospect ID IS INPUTTED!"
+        return "Error: NO PROSPECT ID IS INPUTTED!"
 
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     cursor = connection.cursor(dictionary=True)
@@ -868,12 +952,15 @@ def api_prospect_id():
 @app.route('/addprospect', methods=['POST'])
 def addprospect():
     request_data = request.get_json()
-    client_status_id = request_data['client_status_id']
+    airline_name = request_data['airline_name']
+    address = request_data['address']
+    zip_code = request_data['zip_code']
+    state_id = request_data['state_id']
     country_id = request_data['country_id']
     region_id = request_data['region_id']
-    airline_name = request_data['airline_name']
+    client_status_id = request_data['client_status_id']
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
-    query = "INSERT INTO airline_prospect (client_status_id, country_id, region_id, airline_name) VALUES ('"+client_status_id+"', '"+country_id+"', '"+region_id+"', '"+airline_name+"')" 
+    query = "INSERT INTO airline_prospect (airline_name, address, zip_code, state_id, country_id, region_id, client_status_id ) VALUES ('"+airline_name+"','"+address+"', '"+zip_code+"','"+state_id+"', '"+country_id+"', '"+region_id+"','"+client_status_id+"')" 
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"
 
@@ -884,14 +971,17 @@ def updateprospect():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     request_data = request.get_json()
     id_update_prospect = request_data['prospect_id']
-    new_client_status_id = request_data['client_status_id']
+    new_airline_name = request_data['airline_name']
+    new_address = request_data['address']
+    new_zip_code = request_data['zip_code']
+    new_state_id = request_data['state_id']
     new_country_id = request_data['country_id']
     new_region_id = request_data['region_id']
-    new_airline_name = request_data['airline_name']
+    new_client_status_id = request_data['client_status_id']
     update_prospect = """
     UPDATE airline_prospect 
-    SET client_status_id = %s, country_id = %s, region_id = %s, airline_name = %s
-    WHERE prospect_id = %s """ % (new_client_status_id, new_country_id, new_region_id, new_airline_name, id_update_prospect)
+    SET airline_name = %s, address = %s, zip_code = %s, state_id = %s, country_id = %s, region_id = %s, client_status_id = %s
+    WHERE prospect_id = %s """ % (new_airline_name, new_address, new_zip_code, new_state_id, new_country_id, new_region_id, new_client_status_id, id_update_prospect)
     execute_query(connection, update_prospect)
     return "PUT REQUEST IS GOOD!"
 
@@ -908,8 +998,9 @@ def deleteprospect():
 #-------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+
 #-------------------------------------------------------------------------------------------------------------------------------------------------
-#11
+#12
 #airline client crud
 
 @app.route('/client/all', methods=['GET'])
@@ -932,7 +1023,7 @@ def api_client_id():
     if 'client_id' in request.args:
         client_id = int(request.args['client_id']) # making an id variable to save it locally when provided into endpoint
     else:
-        return "Error: NO client ID IS INPUTTED!"
+        return "Error: NO AIRLINE CLIENT ID IS INPUTTED!"
 
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     cursor = connection.cursor(dictionary=True)
@@ -950,12 +1041,15 @@ def api_client_id():
 @app.route('/addclient', methods=['POST'])
 def addclient():
     request_data = request.get_json()
-    client_status_id = request_data['client_status_id']
+    airline_name = request_data['airline_name']
+    address = request_data['address']
+    zip_code = request_data['zip_code']
+    state_id = request_data['state_id']
     country_id = request_data['country_id']
     region_id = request_data['region_id']
-    airline_name = request_data['airline_name']
+    client_status_id = request_data['client_status_id']
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
-    query = "INSERT INTO airline_client (client_status_id, country_id, region_id, airline_name) VALUES ('"+client_status_id+"', '"+country_id+"', '"+region_id+"', '"+airline_name+"')" 
+    query = "INSERT INTO airline_client (airline_name, address, zip_code, state_id, country_id, region_id, client_status_id ) VALUES ('"+airline_name+"','"+address+"', '"+zip_code+"','"+state_id+"', '"+country_id+"', '"+region_id+"','"+client_status_id+"')" 
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"
 
@@ -966,14 +1060,17 @@ def updateclient():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     request_data = request.get_json()
     id_update_client = request_data['client_id']
-    new_client_status_id = request_data['client_status_id']
+    new_airline_name = request_data['airline_name']
+    new_address = request_data['address']
+    new_zip_code = request_data['zip_code']
+    new_state_id = request_data['state_id']
     new_country_id = request_data['country_id']
     new_region_id = request_data['region_id']
-    new_airline_name = request_data['airline_name']
+    new_client_status_id = request_data['client_status_id']
     update_client = """
     UPDATE airline_client 
-    SET client_status_id = %s, country_id = %s, region_id = %s, airline_name = %s
-    WHERE client_id = %s """ % (new_client_status_id, new_country_id, new_region_id, new_airline_name, id_update_client)
+    SET airline_name = %s, address = %s, zip_code = %s, state_id = %s, country_id = %s, region_id = %s, client_status_id = %s
+    WHERE client_id = %s """ % (new_airline_name, new_address, new_zip_code, new_state_id, new_country_id, new_region_id, new_client_status_id, id_update_client)
     execute_query(connection, update_client)
     return "PUT REQUEST IS GOOD!"
 
@@ -993,7 +1090,7 @@ def deleteclient():
 
 
 #----------------------------------------------------------------------------------------------------------------------------------------------
-#12
+#13
 #airline client employee crud
 
 
@@ -1001,7 +1098,7 @@ def deleteclient():
 def api_all_client_employee():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     cursor = connection.cursor(dictionary=True)
-    mysql = "SELECT * FROM airline_client_employee"
+    mysql = "SELECT * FROM client_employee"
     cursor.execute(mysql)
     rows = cursor.fetchall()
     client_employee_results = []
@@ -1017,11 +1114,11 @@ def api_client_employee_id():
     if 'client_employee_id' in request.args:
         client_employee_id = int(request.args['client_employee_id']) # making an id variable to save it locally when provided into endpoint
     else:
-        return "Error: NO client_employee ID IS INPUTTED!"
+        return "Error: NO CLIENT EMPLOYEE ID IS INPUTTED!"
 
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     cursor = connection.cursor(dictionary=True)
-    mysql = "SELECT * FROM airline_client_employee"
+    mysql = "SELECT * FROM client_employee"
     cursor.execute(mysql)
     rows = cursor.fetchall()
     client_employee_results = []
@@ -1035,14 +1132,13 @@ def api_client_employee_id():
 @app.route('/addclient_employee', methods=['POST'])
 def addclient_employee():
     request_data = request.get_json()
-    client_id = request_data['client_id']
-    employee_id = request_data['employee_id']
     first_name = request_data['first_name']
     last_name = request_data['last_name']
     phone_number = request_data['phone_number']
     email = request_data['email']
+    client_id = request_data['client_id']
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
-    query = "INSERT INTO airline_client_employee (client_id, employee_id, first_name, last_name, phone_number, email) VALUES ('"+client_id+"', '"+employee_id+"', '"+first_name+"', '"+last_name+"', '"+phone_number+"', '"+email+"')" 
+    query = "INSERT INTO client_employee (first_name, last_name, phone_number, email, client_id) VALUES ('"+first_name+"', '"+last_name+"', '"+phone_number+"', '"+email+"', '"+client_id+"')" 
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"
 
@@ -1053,16 +1149,15 @@ def updateclient_employee():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     request_data = request.get_json()
     id_update_client_employee = request_data['client_employee_id']
-    new_client_id = request_data['client_id']
-    new_employee_id = request_data['employee_id']
     new_first_name = request_data['first_name']
     new_last_name = request_data['last_name']
     new_phone_number = request_data['phone_number']
     new_email = request_data['email']
+    new_client_id = request_data['client_id']
     update_client_employee = """
-    UPDATE airline_client_employee 
+    UPDATE client_employee 
     SET client_id = %s, employee_id = %s, first_name = %s, last_name = %s, phone_number = %s, email = %s
-    WHERE client_employee_id = %s """ % (new_client_id, new_employee_id, new_first_name, new_last_name, new_phone_number, new_email, id_update_client_employee)
+    WHERE client_employee_id = %s """ % (new_first_name, new_last_name, new_phone_number, new_email, new_client_id, id_update_client_employee)
     execute_query(connection, update_client_employee)
     return "PUT REQUEST IS GOOD!"
 
@@ -1072,15 +1167,16 @@ def deleteclient_employee():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     request_data = request.get_json()
     id_client_employee = request_data['client_employee_id']
-    delete_client_employee = "DELETE FROM airline_client_employee WHERE client_employee_id = %s" % (id_client_employee)
+    delete_client_employee = "DELETE FROM client_employee WHERE client_employee_id = %s" % (id_client_employee)
     execute_query(connection, delete_client_employee)
     return "DELETE REQUEST IS GOOD!"
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#13
+#14
 #employee crud
 
 
@@ -1104,7 +1200,7 @@ def api_employee_id():
     if 'employee_id' in request.args:
         employee_id = int(request.args['employee_id']) # making an id variable to save it locally when provided into endpoint
     else:
-        return "Error: NO employee ID IS INPUTTED!"
+        return "Error: NO EMPLOYEE ID IS INPUTTED!"
 
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     cursor = connection.cursor(dictionary=True)
@@ -1122,16 +1218,20 @@ def api_employee_id():
 @app.route('/addemployee', methods=['POST'])
 def addemployee():
     request_data = request.get_json()
-    employee_status_id = request_data['employee_status_id']
-    department_id = request_data['department_id']
-    country_id = request_data['country_id']
-    region_id = request_data['region_id']
     first_name = request_data['first_name']
     last_name = request_data['last_name']
     phone_number = request_data['phone_number']
     email = request_data['email']
+    address = request_data['address']
+    zip_code = request_data['zip_code']
+    state_id = request_data['state_id']
+    country_id = request_data['country_id']
+    region_id = request_data['region_id']
+    department_id = request_data['department_id']
+    employee_status_id = request_data['employee_status_id']
+    client_employee_id = request_data['client_employee_id']
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
-    query = "INSERT INTO employee (employee_status_id, department_id, country_id, region_id, first_name, last_name, phone_number, email) VALUES ('"+employee_status_id+"', '"+department_id+"', '"+country_id+"', '"+region_id+"','"+first_name+"', '"+last_name+"', '"+phone_number+"', '"+email+"')" 
+    query = "INSERT INTO employee (first_name, last_name, phone_number, email, address, zip_code, state_id, country_id, region_id, department_id, employee_status_id, client_employee_id) VALUES ('"+first_name+"', '"+last_name+"', '"+phone_number+"', '"+email+"', '"+address+"', '"+zip_code+"', '"+state_id+"', '"+country_id+"', '"+region_id+"', '"+department_id+"', '"+employee_status_id+"', '"+client_employee_id+"' )" 
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"
 
@@ -1142,18 +1242,22 @@ def updateemployee():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     request_data = request.get_json()
     id_update_employee = request_data['employee_id']
-    new_employee_status_id = request_data['employee_status_id']
-    new_department_id = request_data['department_id']
-    new_country_id = request_data['country_id']
-    new_region_id = request_data['region_id']
     new_first_name = request_data['first_name']
     new_last_name = request_data['last_name']
     new_phone_number = request_data['phone_number']
     new_email = request_data['email']
+    new_address = request_data['address']
+    new_zip_code = request_data['zip_code']
+    new_state_id = request_data['state_id']
+    new_country_id = request_data['country_id']
+    new_region_id = request_data['region_id']
+    new_department_id = request_data['department_id']
+    new_employee_status_id = request_data['employee_status_id']
+    new_client_employee_id = request_data['client_employee_id']
     update_employee = """
     UPDATE employee 
-    SET employee_status_id = %s, department_id = %s, country_id = %s, region_id = %s, first_name = %s, last_name = %s, phone_number = %s, email = %s
-    WHERE client_employee_id = %s """ % (new_employee_status_id, new_department_id, new_country_id, new_region_id, new_first_name, new_last_name, new_phone_number, new_email, id_update_employee)
+    SET first_name = %s, last_name = %s, phone_number = %s, email = %s, address = %s, zip_code = %s, state_id = %s, country_id = %s, region_id = %s, department_id = %s, employee_status_id = %s, client_employee_id = %s
+    WHERE client_employee_id = %s """ % (new_first_name, new_last_name, new_phone_number, new_email, new_address, new_zip_code, new_state_id, new_country_id, new_region_id, new_department_id, new_employee_status_id, new_client_employee_id, id_update_employee)
     execute_query(connection, update_employee)
     return "PUT REQUEST IS GOOD!"
 
@@ -1166,6 +1270,10 @@ def deleteemployee():
     delete_employee = "DELETE FROM employee WHERE employee_id = %s" % (id_employee)
     execute_query(connection, delete_employee)
     return "DELETE REQUEST IS GOOD!"
+
+
+
+#---------------------------------------------------------------------------------------------------------------------------------------------
 
 app.run()
 
