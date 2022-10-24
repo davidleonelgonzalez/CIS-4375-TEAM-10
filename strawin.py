@@ -716,9 +716,9 @@ def api_employee_status_id():
 @app.route('/addemployee_status', methods=['POST'])
 def addemployee_status():
     request_data = request.get_json()
-    employee_status_name = request_data['employee_status_name']
+    status_name = request_data['status_name']
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
-    query = "INSERT INTO employee_status (employee_status_name) VALUES ('"+employee_status_name+"')" 
+    query = "INSERT INTO employee_status (employee_status_name) VALUES ('"+status_name+"')" 
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"
 
@@ -729,11 +729,11 @@ def updateemployee_status():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     request_data = request.get_json()
     id_update_employee_status = request_data['employee_status_id']
-    new_employee_status_name = request_data['employee_status_name']
+    new_status_name = request_data['status_name']
     update_employee_status = """
     UPDATE employee_status 
-    SET employee_status_name = %s
-    WHERE employee_status_id = %s """ % (new_employee_status_name, id_update_employee_status)
+    SET status_name = %s
+    WHERE employee_status_id = %s """ % (new_status_name, id_update_employee_status)
     execute_query(connection, update_employee_status)
     return "PUT REQUEST IS GOOD!"
 
@@ -794,9 +794,9 @@ def api_client_status_id():
 @app.route('/addclient_status', methods=['POST'])
 def addclient_status():
     request_data = request.get_json()
-    client_status_name = request_data['client_status_name']
+    status_name = request_data['status_name']
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
-    query = "INSERT INTO client_status (client_status_name) VALUES ('"+client_status_name+"')" 
+    query = "INSERT INTO client_status (status_name) VALUES ('"+status_name+"')" 
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"
 
@@ -807,11 +807,11 @@ def updateclient_status():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     request_data = request.get_json()
     id_update_client_status = request_data['client_status_id']
-    new_client_status_name = request_data['client_status_name']
+    new_status_name = request_data['status_name']
     update_client_status = """
     UPDATE client_status 
-    SET client_status_name = %s
-    WHERE client_status_id = %s """ % (new_client_status_name, id_update_client_status)
+    SET status_name = %s
+    WHERE client_status_id = %s """ % (new_status_name, id_update_client_status)
     execute_query(connection, update_client_status)
     return "PUT REQUEST IS GOOD!"
 
