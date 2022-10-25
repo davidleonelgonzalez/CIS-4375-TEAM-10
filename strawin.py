@@ -156,7 +156,7 @@ def addregion():
     return "POST REQUEST IS GOOD!"
 
 
-
+#does not work says object is not subscriptable
 @app.route('/updateregion', methods=['PUT'])
 def updateregion():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
@@ -362,7 +362,7 @@ def api_all_vendor():
 @app.route('/vendor', methods=['GET'])
 def api_vendor_id():
     if 'vendor_id' in request.args:
-        vendor_id = int(request.args['country_id']) # making an id variable to save it locally when provided into endpoint
+        vendor_id = int(request.args['vendor_id']) # making an id variable to save it locally when provided into endpoint
     else:
         return "Error: NO VENDOR ID IS INPUTTED!"
 
@@ -469,7 +469,7 @@ def addserver():
     request_data = request.get_json()
     vm_type = request_data['vm_type']
     server_number = request_data['server_number']
-    server_location = request_data['software_location']
+    server_location = request_data['server_location']
     vendor_id = request_data['vendor_id']
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     query = "INSERT INTO cloud_server (vm_type, server_number, server_location, vendor_id) VALUES ('"+vm_type+"', '"+server_number+"', '"+server_location+"', '"+vendor_id+"')" 
@@ -550,7 +550,7 @@ def api_product_id():
 @app.route('/addproduct', methods=['POST'])
 def addproduct():
     request_data = request.get_json()
-    product_sku = request.date['product_sku']
+    product_sku = request_data['product_sku']
     product_name = request_data['product_name']
     product_description = request_data['product_description']
     category = request_data['category']
@@ -718,7 +718,7 @@ def addemployee_status():
     request_data = request.get_json()
     status_name = request_data['status_name']
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
-    query = "INSERT INTO employee_status (employee_status_name) VALUES ('"+status_name+"')" 
+    query = "INSERT INTO employee_status (status_name) VALUES ('"+status_name+"')" 
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"
 
@@ -875,7 +875,7 @@ def addsales():
     employee_id = request_data['employee_id']
     prospect_id = request_data['prospect_id']
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
-    query = "INSERT INTO sales (employee_id, propsect_id) VALUES ('"+employee_id+"', '"+prospect_id+"')" 
+    query = "INSERT INTO sales (employee_id, prospect_id) VALUES ('"+employee_id+"', '"+prospect_id+"')" 
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"
 
@@ -1132,13 +1132,10 @@ def api_client_employee_id():
 @app.route('/addclient_employee', methods=['POST'])
 def addclient_employee():
     request_data = request.get_json()
-    first_name = request_data['first_name']
-    last_name = request_data['last_name']
-    phone_number = request_data['phone_number']
-    email = request_data['email']
     client_id = request_data['client_id']
+    employee_id = request_data['employee_id']
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
-    query = "INSERT INTO client_employee (first_name, last_name, phone_number, email, client_id) VALUES ('"+first_name+"', '"+last_name+"', '"+phone_number+"', '"+email+"', '"+client_id+"')" 
+    query = "INSERT INTO client_employee (client_id, employee_id) VALUES ('"+client_id+"', '"+employee_id+"')" 
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"
 
@@ -1148,16 +1145,12 @@ def addclient_employee():
 def updateclient_employee():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     request_data = request.get_json()
-    id_update_client_employee = request_data['client_employee_id']
-    new_first_name = request_data['first_name']
-    new_last_name = request_data['last_name']
-    new_phone_number = request_data['phone_number']
-    new_email = request_data['email']
     new_client_id = request_data['client_id']
+    new_employee_id = request_data['employee_id']
     update_client_employee = """
     UPDATE client_employee 
-    SET client_id = %s, employee_id = %s, first_name = %s, last_name = %s, phone_number = %s, email = %s
-    WHERE client_employee_id = %s """ % (new_first_name, new_last_name, new_phone_number, new_email, new_client_id, id_update_client_employee)
+    SET client_id = %s, employee_id = %s
+    WHERE client_id = %s AND employee_id = %s """ % (new_client_id, new_employee_id)
     execute_query(connection, update_client_employee)
     return "PUT REQUEST IS GOOD!"
 
@@ -1166,8 +1159,9 @@ def updateclient_employee():
 def deleteclient_employee():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     request_data = request.get_json()
-    id_client_employee = request_data['client_employee_id']
-    delete_client_employee = "DELETE FROM client_employee WHERE client_employee_id = %s" % (id_client_employee)
+    id_client = request_data['client_id']
+    id_employee = request_data['employee_id']
+    delete_client_employee = "DELETE FROM client_employee WHERE client_id = %s AND employee_id = %s"  % (id_client, id_employee)
     execute_query(connection, delete_client_employee)
     return "DELETE REQUEST IS GOOD!"
 
@@ -1229,9 +1223,8 @@ def addemployee():
     region_id = request_data['region_id']
     department_id = request_data['department_id']
     employee_status_id = request_data['employee_status_id']
-    client_employee_id = request_data['client_employee_id']
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
-    query = "INSERT INTO employee (first_name, last_name, phone_number, email, address, zip_code, state_id, country_id, region_id, department_id, employee_status_id, client_employee_id) VALUES ('"+first_name+"', '"+last_name+"', '"+phone_number+"', '"+email+"', '"+address+"', '"+zip_code+"', '"+state_id+"', '"+country_id+"', '"+region_id+"', '"+department_id+"', '"+employee_status_id+"', '"+client_employee_id+"' )" 
+    query = "INSERT INTO employee (first_name, last_name, phone_number, email, address, zip_code, state_id, country_id, region_id, department_id, employee_status_id) VALUES ('"+first_name+"', '"+last_name+"', '"+phone_number+"', '"+email+"', '"+address+"', '"+zip_code+"', '"+state_id+"', '"+country_id+"', '"+region_id+"', '"+department_id+"', '"+employee_status_id+"' )" 
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"
 
@@ -1253,11 +1246,10 @@ def updateemployee():
     new_region_id = request_data['region_id']
     new_department_id = request_data['department_id']
     new_employee_status_id = request_data['employee_status_id']
-    new_client_employee_id = request_data['client_employee_id']
     update_employee = """
     UPDATE employee 
-    SET first_name = %s, last_name = %s, phone_number = %s, email = %s, address = %s, zip_code = %s, state_id = %s, country_id = %s, region_id = %s, department_id = %s, employee_status_id = %s, client_employee_id = %s
-    WHERE client_employee_id = %s """ % (new_first_name, new_last_name, new_phone_number, new_email, new_address, new_zip_code, new_state_id, new_country_id, new_region_id, new_department_id, new_employee_status_id, new_client_employee_id, id_update_employee)
+    SET first_name = %s, last_name = %s, phone_number = %s, email = %s, address = %s, zip_code = %s, state_id = %s, country_id = %s, region_id = %s, department_id = %s, employee_status_id = %s
+    WHERE client_employee_id = %s """ % (new_first_name, new_last_name, new_phone_number, new_email, new_address, new_zip_code, new_state_id, new_country_id, new_region_id, new_department_id, new_employee_status_id, id_update_employee)
     execute_query(connection, update_employee)
     return "PUT REQUEST IS GOOD!"
 
@@ -1270,7 +1262,6 @@ def deleteemployee():
     delete_employee = "DELETE FROM employee WHERE employee_id = %s" % (id_employee)
     execute_query(connection, delete_employee)
     return "DELETE REQUEST IS GOOD!"
-
 
 
 #---------------------------------------------------------------------------------------------------------------------------------------------

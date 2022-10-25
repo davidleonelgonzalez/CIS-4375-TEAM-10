@@ -1063,19 +1063,14 @@ app.get('/client_employee', function(req, res) {
 });
 
 app.post('/addclient_employee', function(req, res){
-  var addFirstName = req.body.first_name;
-  var addLastName = req.body.last_name;
-  var addPhoneNumber = req.body.phone_number;
-  var addEmail = req.body.email;
   var addClientID = req.body.client_id;
-
+  var addEmployeeID = req.body.employee_id;
+  
   axios.post(`http://127.0.0.1:5000/addclient_employee`,{
     
-    first_name: addFirstName,
-    last_name: addLastName,
-    phone_number: addPhoneNumber,
-    email: addEmail,
-    client_id: addClientID
+
+    client_id: addClientID,
+    employee_id: addEmployeeID
 
     })
     .then(function(response) {
@@ -1089,19 +1084,14 @@ app.post('/addclient_employee', function(req, res){
 
 
 app.put('/updateclient_employee', function(req, res){
-  var updateFirstName = req.body.first_name;
-  var updateLastName = req.body.last_name;
-  var updatePhoneNumber = req.body.phone_number;
-  var updateEmail = req.body.email;
   var updateClientID = req.body.client_id;
+  var updateEmployeeID = req.body.employee_id;
   
   axios.put(`http://127.0.0.1:5000/updateclient_employee`,{
-      id:5000,
-      first_name: updateFirstName,
-      last_name: updateLastName,
-      phone_number: updatePhoneNumber,
-      email: updateEmail,
-      client_id: updateClientID
+
+      client_id: updateClientID,
+      employee_id: updateEmployeeID
+  
   
     })
     .then(function(response) {
@@ -1115,19 +1105,15 @@ app.put('/updateclient_employee', function(req, res){
 
 
 app.delete('/deleteclient_employee', function(req, res){
-  var deleteFirstName = req.body.first_name;
-  var deleteLastName = req.body.last_name;
-  var deletePhoneNumber = req.body.phone_number;
-  var deleteEmail = req.body.email;
+
   var deleteClientID = req.body.client_id;
+  var deleteEmployeeID = req.body.employee_id;
 
   axios.delete(`http://127.0.0.1:5000/deleteclient_employee`,{
-    id:5000,
-    first_name: deleteFirstName,
-    last_name: deleteLastName,
-    phone_number: deletePhoneNumber,
-    email: deleteEmail,
-    client_id: deleteClientID
+
+    client_id: deleteClientID,
+    employee_id: deleteEmployeeID
+
 
     })
     .then(function(response) {
