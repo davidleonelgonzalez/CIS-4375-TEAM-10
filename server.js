@@ -1,4 +1,3 @@
-
 var express = require('express');
 var app = express();
 const bodyParser  = require('body-parser');
@@ -9,7 +8,7 @@ const axios = require('axios');
 
 //app will then use body parser
 app.use(bodyParser.urlencoded());
-
+app.use(express.static(path.join(__dirname, 'public')))
 //the app will set to view engine  to call ejs in view folder
 app.set('view engine', 'ejs');
 
