@@ -1,14 +1,14 @@
 var express = require('express');
 var app = express();
-const bodyParser  = require('body-parser');
+var bodyParser  = require('body-parser');
 // body parser in use
 
 //creating axios to call on my rest api
 const axios = require('axios');
 
 //app will then use body parser
-app.use(bodyParser.urlencoded());
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.urlencoded({ extended: true }));
+//app.use(express.static(path.join(__dirname, 'public')))
 //the app will set to view engine  to call ejs in view folder
 app.set('view engine', 'ejs');
 
@@ -34,8 +34,6 @@ app.get('/login', function(req, res) {
 //home----------------------------------------------------------------------------------------------------------------------------
 
 app.get('/', function(req, res) {
-
-
   res.render('pages/home', {
 
 });
@@ -46,8 +44,14 @@ app.get('/', function(req, res) {
 
 //region-------------------------------------------------------------------------------------------------------------------------
 
-
 app.get('/region', function(req, res) {
+  res.render('pages/region', {
+
+  }); 
+      
+});
+
+app.get('/getregion', function(req, res) {
   axios.get(`http://127.0.0.1:5000/region/all`)
   .then((response)=>{
       
@@ -116,16 +120,21 @@ app.delete('/deleteregion', function(req, res){
 
 
 //country---------------------------------------------------------------------------------------------------------------
-
-
 app.get('/country', function(req, res) {
+  axios.get(`http://127.0.0.1:5000/country/all`)
+  res.render('pages/country', {
+
+  });
+});
+
+app.get('/getcountry', function(req, res) {
   axios.get(`http://127.0.0.1:5000/country/all`)
   .then((response)=>{
       
       var country = response.data;
 
 
-      res.render('pages/country', {
+      res.render('pages/getcountry', {
           country: country
   });
 });
@@ -192,16 +201,21 @@ app.delete('/deletecountry', function(req, res){
 
 
 //state --------------------------------------------------------------------------------------------------------
-
-
 app.get('/state', function(req, res) {
+  axios.get(`http://127.0.0.1:5000/state/all`)
+    res.render('pages/country', {
+
+  });
+});
+
+app.get('/getstate', function(req, res) {
   axios.get(`http://127.0.0.1:5000/state/all`)
   .then((response)=>{
       
       var state = response.data;
 
 
-      res.render('pages/state', {
+      res.render('pages/getstate', {
           state: state
   });
 });

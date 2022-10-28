@@ -1,4 +1,40 @@
 <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head'); %>
+    Welcome to the best application!
+</head>
 
 
+<!-- Then created a head tag to include the code information from my partials folder/ head file code 
+    to indicate the head i want to use for this page as for all the other pages to show consistency-->
+
+    <!--Body tag indicates the class is a container for the following code below-->
+<body class="container">
+
+    <header>
+
+        <%- include('../partials/header'); %>
+        WElcome
+    </header>
+<!-- Then created a header tag to contain the code information from the partials folder/ header file 
+to use the header style for this page as for all the other pages to show consistency-->
+
+<!--Then established a main tag to handle the code for designing the page.
+The div tag is opened to set class as jumbotron and style background color of page.
+Using headings to display messages for the page to have, and tagline from server file -->
+    <main>
+
+    </main>
+<!-- Using <p> and <strong> tags to add to the design display of the messages-->
+
+    
+<!--Then created a footer tag to contain the code information from the partials folder/ footer file 
+to use the footer style for this page as for all the other pages to show consistency.-->
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+
+</body>
 </html>
