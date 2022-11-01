@@ -1,0 +1,41 @@
+body {
+    background: url('/images/Homepage_picture.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover ;
+    -moz-backgorund-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+
+}
+
+.box {
+    background-image: url('../images/Homepage_picture.jpg');
+    padding: 100px;
+    margin: 100px;
+
+    background-repeat: no-repeat;
+}
+
+img{
+    width: 20%;
+    float: left;
+    margin:0;
+
+}
+
+.btn {
+    background-color: DodgerBlue; /* Blue background */
+    border: none; /* Remove borders */
+    color: white; /* White text */
+    padding: 12px 16px; /* Some padding */
+    font-size: 16px; /* Set a font size */
+    cursor: pointer; /* Mouse pointer on hover */
+  }
+  
+  /* Darker background on mouse-over */
+  .btn:hover {
+    background-color: RoyalBlue;
+  }
+
+.color-me{
+    color:white
+}

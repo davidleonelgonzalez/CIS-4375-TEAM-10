@@ -1,4 +1,3 @@
-
 var express = require('express');
 var app = express();
 const bodyParser  = require('body-parser');
@@ -12,6 +11,9 @@ app.use(bodyParser.urlencoded());
 
 //the app will set to view engine  to call ejs in view folder
 app.set('view engine', 'ejs');
+
+var publicDir = require('path').join(__dirname,'/public'); 
+app.use(express.static(publicDir));
 
 const PORT = process.env.PORT || 5000;
 
@@ -33,6 +35,14 @@ app.get('/login', function(req, res) {
 //-------------------------------------------------------------------------------------------------------------------------------
 
 //home----------------------------------------------------------------------------------------------------------------------------
+
+app.get('/test', function(req, res) {
+
+
+  res.render('pages/test', {
+
+});
+});
 
 app.get('/', function(req, res) {
 
@@ -447,6 +457,13 @@ app.delete('/deleteserver', function(req, res){
 //-----------------------------------------------------------------------------------------
 
 //product ---------------------------------------------------------------------------------
+app.get('/products', function(req, res) {
+
+
+  res.render('pages/products', {
+
+});
+});
 
 app.get('/product', function(req, res) {
   axios.get(`http://127.0.0.1:5000/product/all`)
@@ -952,7 +969,7 @@ app.get('/client', function(req, res) {
       var client = response.data;
 
 
-      res.render('pages/client', {
+      res.render('pages/airline_client', {
         client: client
   });
 });
@@ -981,7 +998,7 @@ app.post('/addclient', function(req, res){
       console.log(response.data);
     })
 
-  res.render('pages/submit')
+    res.render('pages/submit', {body: req.body.airline_name + "Airline Added"})
 
 });
 });
@@ -1259,6 +1276,163 @@ app.delete('/deleteemployee', function(req, res){
 
 });
 //--------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+
+
+//Report 1 ------------------------------------------------------------------
+app.get('/reports', function(req, res) {
+
+
+  res.render('pages/reports', {
+
+});
+});
+
+app.get('/report1', function(req, res) {
+  axios.get(`http://127.0.0.1:5000/report1`)
+  .then((response)=>{
+      
+      var report1 = response.data;
+
+
+      res.render('pages/report', {
+        report1: report1
+  });
+});
+})
+//----------------------------------------------------------------------------
+
+//Report 2 ------------------------------------------------------------------
+app.get('/report2', function(req, res) {
+  axios.get(`http://127.0.0.1:5000/report2`)
+  .then((response)=>{
+      
+      var report2 = response.data;
+
+
+      res.render('pages/report', {
+        report2: report2
+  });
+});
+})
+//----------------------------------------------------------------------------
+
+//Report 3 ------------------------------------------------------------------
+app.get('/report3', function(req, res) {
+  axios.get(`http://127.0.0.1:5000/report3`)
+  .then((response)=>{
+      
+      var report3 = response.data;
+
+
+      res.render('pages/report', {
+        report3: report3
+  });
+});
+})
+//----------------------------------------------------------------------------
+
+//Report 3 ------------------------------------------------------------------
+app.get('/report4', function(req, res) {
+  axios.get(`http://127.0.0.1:5000/report4`)
+  .then((response)=>{
+      
+      var report4 = response.data;
+
+
+      res.render('pages/report', {
+        report4: report4
+  });
+});
+})
+//----------------------------------------------------------------------------
+
+//Report 5 ------------------------------------------------------------------
+app.get('/report5', function(req, res) {
+  axios.get(`http://127.0.0.1:5000/report5`)
+  .then((response)=>{
+      
+      var report5 = response.data;
+
+
+      res.render('pages/report', {
+        report5: report5
+  });
+});
+})
+//----------------------------------------------------------------------------
+
+//Report 6 ------------------------------------------------------------------
+app.get('/report6', function(req, res) {
+  axios.get(`http://127.0.0.1:5000/report6`)
+  .then((response)=>{
+      
+      var report6 = response.data;
+
+
+      res.render('pages/report', {
+        report6: report6
+  });
+});
+})
+//----------------------------------------------------------------------------
+
+//Report 7 ------------------------------------------------------------------
+app.get('/report7', function(req, res) {
+  axios.get(`http://127.0.0.1:5000/report7`)
+  .then((response)=>{
+      
+      var report7 = response.data;
+
+
+      res.render('pages/report', {
+        report7: report7
+  });
+});
+})
+
+//Report 8 ------------------------------------------------------------------
+app.get('/report8', function(req, res) {
+  axios.get(`http://127.0.0.1:5000/report7`)
+  .then((response)=>{
+      
+      var report8 = response.data;
+
+
+      res.render('pages/report', {
+        report8: report8
+  });
+});
+})
+
+//Report 9 ------------------------------------------------------------------
+app.get('/report9', function(req, res) {
+  axios.get(`http://127.0.0.1:5000/report7`)
+  .then((response)=>{
+      
+      var report9 = response.data;
+
+
+      res.render('pages/report', {
+        report9: report9
+  });
+});
+})
+
+//Report 10 ------------------------------------------------------------------
+app.get('/report10', function(req, res) {
+  axios.get(`http://127.0.0.1:5000/report7`)
+  .then((response)=>{
+      
+      var report10 = response.data;
+
+
+      res.render('pages/report', {
+        report10: report10
+  });
+});
+})
 
 //---------------------------------------------------------------------------
 // app listen

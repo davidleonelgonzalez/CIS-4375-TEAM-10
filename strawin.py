@@ -467,12 +467,13 @@ def api_server_id():
 @app.route('/addserver', methods=['POST'])
 def addserver():
     request_data = request.get_json()
+    vm_name = request_data['vm_name']
     vm_type = request_data['vm_type']
     server_number = request_data['server_number']
     server_location = request_data['server_location']
     vendor_id = request_data['vendor_id']
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
-    query = "INSERT INTO cloud_server (vm_type, server_number, server_location, vendor_id) VALUES ('"+vm_type+"', '"+server_number+"', '"+server_location+"', '"+vendor_id+"')" 
+    query = "INSERT INTO cloud_server (vm_name, vm_type, server_number, server_location, vendor_id) VALUES ('"+vm_name+"','"+vm_type+"', '"+server_number+"', '"+server_location+"', '"+vendor_id+"')" 
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"
 
@@ -483,14 +484,15 @@ def updateserver():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     request_data = request.get_json()
     id_update_server = request_data['server_id']
+    new_vm_name = request_data['vm_name']
     new_vm_type = request_data['vm_type']
     new_server_number = request_data['server_number']
     new_server_location = request_data['software_location']
     new_vendor_id = request_data['vendor_id']
     update_server = """
     UPDATE cloud_server 
-    SET vm_type = %s, server_number = %s, server_location = %s
-    WHERE server_id = %s """ % (new_vm_type, new_server_number, new_server_location,id_update_server)
+    SET vm_name = %s, vm_type = %s, server_number = %s, server_location = %s, vendor_d = %s
+    WHERE server_id = %s """ % (new_vm_name, new_vm_type, new_server_number, new_server_location, new_vendor_id, id_update_server)
     execute_query(connection, update_server)
     return "PUT REQUEST IS GOOD!"
 
@@ -874,8 +876,11 @@ def addsales():
     request_data = request.get_json()
     employee_id = request_data['employee_id']
     prospect_id = request_data['prospect_id']
+    sales_status = request_data['sales_status']
+    sales_amount = request_data['sales_amount']
+    opportunity_name = request_data['opportunity_name']
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
-    query = "INSERT INTO sales (employee_id, prospect_id) VALUES ('"+employee_id+"', '"+prospect_id+"')" 
+    query = "INSERT INTO sales (employee_id, prospect_id, sales_status, sales_amount, opportunity_name) VALUES ('"+employee_id+"', '"+prospect_id+"', '"+sales_status+"', '"+sales_amount+"', '"+opportunity_name+"')" 
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"
 
@@ -888,10 +893,13 @@ def updatesales():
     id_update_sales = request_data['sales_id']
     new_employee_id = request_data['employee_id']
     new_prospect_id = request_data['prospect_id']
+    new_sales_status = request_data['sales_status']
+    new_sales_amount = request_data['sales_amount']
+    new_opportunity_name = request_data['opportunity_name']
     update_sales = """
     UPDATE sales 
     SET employee_id = %s, prospect_id = %s
-    WHERE sales_id = %s """ % (new_employee_id, new_prospect_id, id_update_sales)
+    WHERE sales_id = %s """ % (new_employee_id, new_prospect_id, new_sales_status, new_sales_amount, new_opportunity_name, id_update_sales)
     execute_query(connection, update_sales)
     return "PUT REQUEST IS GOOD!"
 
@@ -948,10 +956,18 @@ def api_prospect_id():
 
     return jsonify(prospect_results)
 
-
+#date  is still not working
 @app.route('/addprospect', methods=['POST'])
 def addprospect():
     request_data = request.get_json()
+    start_date = datetime.datetime(2022,1,10)
+    end_date = datetime.datetime(2022,1,10)
+    start_date = start_date.date().isoformat()
+    end_date = end_date.date().isoformat()
+    contact_first_name = request_data['contact_first_name']
+    contact_last_name = request_data['contact_last_name']
+    contact_phone_number = request_data['contact_phone_number']
+    contact_email = request_data['contact_email']
     airline_name = request_data['airline_name']
     address = request_data['address']
     zip_code = request_data['zip_code']
@@ -959,8 +975,10 @@ def addprospect():
     country_id = request_data['country_id']
     region_id = request_data['region_id']
     client_status_id = request_data['client_status_id']
+    start_date = request_data['start_date']
+    end_date = request_data['end_date']  
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
-    query = "INSERT INTO airline_prospect (airline_name, address, zip_code, state_id, country_id, region_id, client_status_id ) VALUES ('"+airline_name+"','"+address+"', '"+zip_code+"','"+state_id+"', '"+country_id+"', '"+region_id+"','"+client_status_id+"')" 
+    query = "INSERT INTO airline_prospect (contact_first_name, contact_last_name, contact_phone_number, contact_email, airline_name, address, zip_code, state_id, country_id, region_id, client_status_id, start_date, end_date) VALUES ('"+contact_first_name+"', '"+contact_last_name+"', '"+contact_phone_number+"','"+contact_email+"', '"+airline_name+"','"+address+"', '"+zip_code+"','"+state_id+"', '"+country_id+"', '"+region_id+"','"+client_status_id+"', '"+start_date+"', '"+end_date+"')" 
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"
 
@@ -970,6 +988,10 @@ def addprospect():
 def updateprospect():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     request_data = request.get_json()
+    new_start_date = datetime.datetime(2022,1,10)
+    new_end_date = datetime.datetime(2022,1,10)
+    new_start_date = new_start_date.date().isoformat()
+    new_end_date = new_end_date.date().isoformat()
     id_update_prospect = request_data['prospect_id']
     new_airline_name = request_data['airline_name']
     new_address = request_data['address']
@@ -978,10 +1000,12 @@ def updateprospect():
     new_country_id = request_data['country_id']
     new_region_id = request_data['region_id']
     new_client_status_id = request_data['client_status_id']
+    new_start_date = request_data['start_date']
+    new_end_date = request_data['end_date']
     update_prospect = """
     UPDATE airline_prospect 
-    SET airline_name = %s, address = %s, zip_code = %s, state_id = %s, country_id = %s, region_id = %s, client_status_id = %s
-    WHERE prospect_id = %s """ % (new_airline_name, new_address, new_zip_code, new_state_id, new_country_id, new_region_id, new_client_status_id, id_update_prospect)
+    SET airline_name = %s, address = %s, zip_code = %s, state_id = %s, country_id = %s, region_id = %s, client_status_id = %s, start_date = %s, end_date = %s
+    WHERE prospect_id = %s """ % (new_airline_name, new_address, new_zip_code, new_state_id, new_country_id, new_region_id, new_client_status_id, new_start_date, new_end_date, id_update_prospect)
     execute_query(connection, update_prospect)
     return "PUT REQUEST IS GOOD!"
 
@@ -1041,6 +1065,14 @@ def api_client_id():
 @app.route('/addclient', methods=['POST'])
 def addclient():
     request_data = request.get_json()
+    start_date = datetime.datetime(2022,1,10)
+    end_date = datetime.datetime(2022,1,10)
+    start_date = start_date.date().isoformat()
+    end_date = end_date.date().isoformat()
+    contact_first_name = request_data['contact_first_name']
+    contact_last_name = request_data['contact_last_name']
+    contact_phone_number = request_data['contact_phone_number']
+    contact_email = request_data['contact_email']
     airline_name = request_data['airline_name']
     address = request_data['address']
     zip_code = request_data['zip_code']
@@ -1048,18 +1080,28 @@ def addclient():
     country_id = request_data['country_id']
     region_id = request_data['region_id']
     client_status_id = request_data['client_status_id']
+    start_date = request_data['start_date']
+    end_date = request_data['end_date']    
+    subscription_amount = request_data['subscription_amount']
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
-    query = "INSERT INTO airline_client (airline_name, address, zip_code, state_id, country_id, region_id, client_status_id ) VALUES ('"+airline_name+"','"+address+"', '"+zip_code+"','"+state_id+"', '"+country_id+"', '"+region_id+"','"+client_status_id+"')" 
+    query = "INSERT INTO airline_client (contact_first_name, contact_last_name, contact_phone_number, contact_email, airline_name, address, zip_code, state_id, country_id, region_id, client_status_id, start_date, end_date, subscription_amount) VALUES ('"+contact_first_name+"', '"+contact_last_name+"', '"+contact_phone_number+"', '"+contact_email+"','"+airline_name+"','"+address+"', '"+zip_code+"','"+state_id+"', '"+country_id+"', '"+region_id+"','"+client_status_id+"', '"+start_date+"', '"+end_date+"', '"+subscription_amount+"')" 
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"
+#should see if subscription amount should be decimal
 
 
-
-@app.route('/updatclient', methods=['PUT'])
+@app.route('/updateclient', methods=['PUT'])
 def updateclient():
-    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     request_data = request.get_json()
     id_update_client = request_data['client_id']
+    new_start_date = datetime.datetime(2022,1,10)
+    new_end_date = datetime.datetime(2022,1,10)
+    new_start_date = new_start_date.date().isoformat()
+    new_end_date = new_end_date.date().isoformat()
+    new_contact_first_name = request_data['contact_first_name']
+    new_contact_last_name = request_data['contact_last_name']
+    new_contact_phone_number = request_data['contact_phone_number']
+    new_contact_email = request_data['contact_email']
     new_airline_name = request_data['airline_name']
     new_address = request_data['address']
     new_zip_code = request_data['zip_code']
@@ -1067,10 +1109,14 @@ def updateclient():
     new_country_id = request_data['country_id']
     new_region_id = request_data['region_id']
     new_client_status_id = request_data['client_status_id']
+    new_start_date = request_data['start_date']
+    new_end_date = request_data['end_date']
+    new_subscription_amount = request_data['subscription_amount']
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     update_client = """
     UPDATE airline_client 
-    SET airline_name = %s, address = %s, zip_code = %s, state_id = %s, country_id = %s, region_id = %s, client_status_id = %s
-    WHERE client_id = %s """ % (new_airline_name, new_address, new_zip_code, new_state_id, new_country_id, new_region_id, new_client_status_id, id_update_client)
+    SET contact_first_name = %s, contact_last_name = %s, contact_phone_number = %s, contact_email = %s, airline_name = %s, address = %s, zip_code = %s, state_id = %s, country_id = %s, region_id = %s, client_status_id = %s, start_date = %s, end_date = %s, subscription_amount = %s
+    WHERE client_id = %s """ % (new_contact_first_name, new_contact_last_name, new_contact_phone_number, new_contact_email, new_airline_name, new_address, new_zip_code, new_state_id, new_country_id, new_region_id, new_client_status_id, new_start_date, new_end_date, new_subscription_amount, id_update_client)
     execute_query(connection, update_client)
     return "PUT REQUEST IS GOOD!"
 
@@ -1212,6 +1258,10 @@ def api_employee_id():
 @app.route('/addemployee', methods=['POST'])
 def addemployee():
     request_data = request.get_json()
+    start_date = datetime.datetime(2022,1,10)
+    end_date = datetime.datetime(2022,1,10)
+    start_date = start_date.date().isoformat()
+    end_date = end_date.date().isoformat()
     first_name = request_data['first_name']
     last_name = request_data['last_name']
     phone_number = request_data['phone_number']
@@ -1223,8 +1273,10 @@ def addemployee():
     region_id = request_data['region_id']
     department_id = request_data['department_id']
     employee_status_id = request_data['employee_status_id']
+    start_date = request_data['start_date']
+    end_date = request_data['end_date']
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
-    query = "INSERT INTO employee (first_name, last_name, phone_number, email, address, zip_code, state_id, country_id, region_id, department_id, employee_status_id) VALUES ('"+first_name+"', '"+last_name+"', '"+phone_number+"', '"+email+"', '"+address+"', '"+zip_code+"', '"+state_id+"', '"+country_id+"', '"+region_id+"', '"+department_id+"', '"+employee_status_id+"' )" 
+    query = "INSERT INTO employee (first_name, last_name, phone_number, email, address, zip_code, state_id, country_id, region_id, department_id, employee_status_id, start_date, end_date) VALUES ('"+first_name+"', '"+last_name+"', '"+phone_number+"', '"+email+"', '"+address+"', '"+zip_code+"', '"+state_id+"', '"+country_id+"', '"+region_id+"', '"+department_id+"', '"+employee_status_id+"', '"+start_date+"', '"+end_date+"')" 
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"
 
@@ -1234,6 +1286,10 @@ def addemployee():
 def updateemployee():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     request_data = request.get_json()
+    new_start_date = datetime.datetime(2022,1,10)
+    new_end_date = datetime.datetime(2022,1,10)
+    new_start_date = new_start_date.date().isoformat()
+    new_end_date = new_end_date.date().isoformat()
     id_update_employee = request_data['employee_id']
     new_first_name = request_data['first_name']
     new_last_name = request_data['last_name']
@@ -1246,10 +1302,12 @@ def updateemployee():
     new_region_id = request_data['region_id']
     new_department_id = request_data['department_id']
     new_employee_status_id = request_data['employee_status_id']
+    new_start_date = request_data['start_date']
+    new_end_date = request_data['end_date']
     update_employee = """
     UPDATE employee 
-    SET first_name = %s, last_name = %s, phone_number = %s, email = %s, address = %s, zip_code = %s, state_id = %s, country_id = %s, region_id = %s, department_id = %s, employee_status_id = %s
-    WHERE client_employee_id = %s """ % (new_first_name, new_last_name, new_phone_number, new_email, new_address, new_zip_code, new_state_id, new_country_id, new_region_id, new_department_id, new_employee_status_id, id_update_employee)
+    SET first_name = %s, last_name = %s, phone_number = %s, email = %s, address = %s, zip_code = %s, state_id = %s, country_id = %s, region_id = %s, department_id = %s, employee_status_id = %s, start_date = %s, end_date = %s
+    WHERE client_employee_id = %s """ % (new_first_name, new_last_name, new_phone_number, new_email, new_address, new_zip_code, new_state_id, new_country_id, new_region_id, new_department_id, new_employee_status_id, new_start_date, new_end_date, id_update_employee)
     execute_query(connection, update_employee)
     return "PUT REQUEST IS GOOD!"
 
@@ -1265,6 +1323,189 @@ def deleteemployee():
 
 
 #---------------------------------------------------------------------------------------------------------------------------------------------
+
+
+#Report 1: Display Airline Client Information
+
+@app.route('/report1', methods=['GET'])
+def report1():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT DISTINCT ac.client_id, ac.contact_first_name, ac.contact_last_name, ac.contact_phone_number, ac.contact_email, ac.airline_name, ac.address, ac.zip_code, s.state_providence_name, c.country_name, r.region_name, cs.status_name, ac.start_date, ac.end_date, ac.subscription_amount FROM airline_client AS ac INNER JOIN state_providence AS s ON ac.state_id = s.state_id INNER JOIN country AS c ON ac.country_id = c.country_id INNER JOIN region AS r ON ac.region_id = r.region_id INNER JOIN client_status AS cs ON ac.client_status_id = cs.client_status_id ORDER BY ac.airline_name"
+
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    report1_results = []
+    for report1 in rows:
+        report1_results.append(report1)
+
+    return jsonify(report1_results)
+
+
+#----------------------------------
+
+#Report 2: Display Airline Prospect Information
+
+@app.route('/report2', methods=['GET'])
+def report2():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT DISTINCT ap.prospect_id, ap.contact_first_name, ap.contact_last_name, ap.contact_phone_number, ap.contact_email, ap.airline_name, ap.address, ap.zip_code, s.state_providence_name, c.country_name, r.region_name, cs.status_name, ap.start_date, ap.end_date FROM airline_prospect AS ap INNER JOIN state_providence AS s ON ap.state_id = s.state_id INNER JOIN country AS c ON ap.country_id = c.country_id INNER JOIN region AS r ON ap.region_id = r.region_id INNER JOIN client_status AS cs ON ap.client_status_id = cs.client_status_id ORDER BY ap.airline_name"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    report2_results = []
+    for report2 in rows:
+        report2_results.append(report2)
+
+    return jsonify(report2_results)
+
+#----------------------------------
+
+#Report 3: Display Number of Airline Clients For Each Region
+
+
+@app.route('/report3', methods=['GET'])
+def report3():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "select COUNT(if(region_id='1',1,NULL)) as North_America, COUNT(if(region_id='2',1,NULL)) as South_America, COUNT(if(region_id='3',1,NULL)) as Europe, COUNT(if(region_id='4',1,NULL)) as Africa, COUNT(if(region_id='5',1,NULL)) as Asia, COUNT(if(region_id='6',1,NULL)) as Oceania, COUNT(if(region_id='7',1,NULL)) as Middle_East from airline_client"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    report3_results = []
+    for report3 in rows:
+        report3_results.append(report3)
+
+    return jsonify(report3_results)
+
+
+#----------------------------------
+
+#Report 4: Display Number of Airline Prospects For Each Region
+
+@app.route('/report4', methods=['GET'])
+def report4():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "select COUNT(if(region_id='1',1,NULL)) as North_America, COUNT(if(region_id='2',1,NULL)) as South_America, COUNT(if(region_id='3',1,NULL)) as Europe, COUNT(if(region_id='4',1,NULL)) as Africa, COUNT(if(region_id='5',1,NULL)) as Asia, COUNT(if(region_id='6',1,NULL)) as Oceania, COUNT(if(region_id='7',1,NULL)) as Middle_East from airline_prospect"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    report4_results = []
+    for report4 in rows:
+        report4_results.append(report4)
+
+    return jsonify(report4_results)
+
+
+#----------------------------------
+
+#Report 5: Display The Client An Employee Handles and The Products They Use
+
+@app.route('/report5', methods=['GET'])
+def report5():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "select e.employee_id, concat(e.first_name,' ',e.last_name) employee_name, p.client_id, ac.airline_name, p.product_sku,p.product_name,p.product_description,p.category from client_employee ce inner join employee e  on ce.employee_id = e.employee_id inner join airline_client ac  on ce.client_id = ac.client_id inner join product p  on p.client_id = ac.client_id group by e.employee_id, e.first_name, e.last_name"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    report5_results = []
+    for report5 in rows:
+        report5_results.append(report5)
+
+    return jsonify(report5_results)
+
+
+#----------------------------------
+
+#Report 6: Display The Prospect An Employee Handles and The Products They Use
+
+@app.route('/report6', methods=['GET'])
+def report6():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "select e.employee_id, concat(e.first_name,' ',e.last_name) employee_name,s.prospect_id, ap.airline_name, p.product_sku,p.product_name,p.product_description,p.category from sales s inner join employee e  on s.employee_id = e.employee_id inner join airline_prospect ap on s.prospect_id = ap.prospect_id inner join product p  on p.prospect_id = ap.prospect_id group by e.employee_id, e.first_name, e.last_name"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    report6_results = []
+    for report6 in rows:
+        report6_results.append(report6)
+
+    return jsonify(report6_results)
+
+
+
+#----------------------------------
+
+#Report 7: Display AMOUNT OF PRODUCTS USED UNDER A CLOUD SERVER
+
+@app.route('/report7', methods=['GET'])
+def report7():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "select cs.server_id, cs.vm_name, cs.vm_type, cs.server_number, cs.server_location, count(p.product_id) total_products from cloud_server cs inner join product p  on p.server_id = cs.server_id group by cs.server_id, cs.vm_type order by count(p.product_id) desc"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    report7_results = []
+    for report7 in rows:
+        report7_results.append(report7)
+
+    return jsonify(report7_results)
+
+#----------------------------------
+
+#Report 8: DISPLAY AMOUNT OF CLOUD SERVERS PER VENDOR 
+
+
+@app.route('/report8', methods=['GET'])
+def report8():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "select v.vendor_id, v.vendor_name, v.vendor_phone, v.vendor_email, v.software_type, v.hardware_type, count(cs.server_id) total_servers from vendor v inner join cloud_server cs  on v.vendor_id = cs.vendor_id group by v.vendor_id, v.vendor_name order by count(cs.server_id) desc"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    report8_results = []
+    for report8 in rows:
+        report8_results.append(report8)
+
+    return jsonify(report8_results)
+
+#----------------------------------
+
+#Report 9: Display Number of Sales For Each Employee
+
+@app.route('/report9', methods=['GET'])
+def report9():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "select e.employee_id, concat(e.first_name,' ',e.last_name) employee_name, count(s.sales_id) total_sales from employee e inner join sales s  on s.employee_id = e.employee_id group by e.employee_id, e.first_name, e.last_name order by count(s.sales_id) desc"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    report9_results = []
+    for report9 in rows:
+        report9_results.append(report9)
+
+    return jsonify(report9_results)
+
+#----------------------------------
+
+#Report 10: Subscription Total Revenue By Region For A Specific Year
+
+
+@app.route('/report10', methods=['GET'])
+def report10():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT  r.region_name, sum(ac.subscription_amount) Total_Revenue FROM airline_client AS ac INNER JOIN region AS r ON ac.region_id = r.region_id and extract(year from ac.start_date) = '2022'"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    report10_results = []
+    for report10 in rows:
+        report10_results.append(report10)
+
+    return jsonify(report10_results)
+
+#----------------------------------
+
+
 
 app.run()
 
