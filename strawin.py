@@ -148,15 +148,15 @@ def api_region_id():
 
 @app.route('/addregion', methods=['POST'])
 def addregion():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     request_data = request.get_json()
     region_name = request_data['region_name']
-    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     query = "INSERT INTO region (region_name) VALUES ('"+region_name+"')" 
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"
 
 
-#does not work says object is not subscriptable
+#does not work says 'None Type' object is not subscriptable
 @app.route('/updateregion', methods=['PUT'])
 def updateregion():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
@@ -1282,7 +1282,7 @@ def addemployee():
 
 
 
-@app.route('/updatemployee', methods=['PUT'])
+@app.route('/updateemployee', methods=['PUT'])
 def updateemployee():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     request_data = request.get_json()
@@ -1404,7 +1404,7 @@ def report4():
 def report5():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     cursor = connection.cursor(dictionary=True)
-    mysql = "select e.employee_id, concat(e.first_name,' ',e.last_name) employee_name, p.client_id, ac.airline_name, p.product_sku,p.product_name,p.product_description,p.category from client_employee ce inner join employee e  on ce.employee_id = e.employee_id inner join airline_client ac  on ce.client_id = ac.client_id inner join product p  on p.client_id = ac.client_id group by e.employee_id, e.first_name, e.last_name"
+    mysql = "select e.employee_id, e.first_name,e.last_name, p.client_id, ac.airline_name, p.product_sku,p.product_name,p.product_description,p.category from client_employee ce inner join employee e  on ce.employee_id = e.employee_id inner join airline_client ac  on ce.client_id = ac.client_id inner join product p  on p.client_id = ac.client_id group by e.employee_id, e.first_name, e.last_name"
     cursor.execute(mysql)
     rows = cursor.fetchall()
     report5_results = []
@@ -1416,13 +1416,13 @@ def report5():
 
 #----------------------------------
 
-#Report 6: Display The Prospect An Employee Handles and The Products They Use
+#Report 6: Display The Prospect An Employee Handles and The Products They Are Trying To Purchase
 
 @app.route('/report6', methods=['GET'])
 def report6():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     cursor = connection.cursor(dictionary=True)
-    mysql = "select e.employee_id, concat(e.first_name,' ',e.last_name) employee_name,s.prospect_id, ap.airline_name, p.product_sku,p.product_name,p.product_description,p.category from sales s inner join employee e  on s.employee_id = e.employee_id inner join airline_prospect ap on s.prospect_id = ap.prospect_id inner join product p  on p.prospect_id = ap.prospect_id group by e.employee_id, e.first_name, e.last_name"
+    mysql = "select e.employee_id, e.first_name,e.last_name,d.department_name, s.prospect_id, ap.airline_name, p.product_sku,p.product_name,p.product_description,p.category  from sales s  inner join employee e  on s.employee_id = e.employee_id  inner join airline_prospect ap on s.prospect_id = ap.prospect_id  inner join product p  on p.prospect_id = ap.prospect_id  inner join department d on d.department_id = e.department_id where d.department_name = 'Sales'"
     cursor.execute(mysql)
     rows = cursor.fetchall()
     report6_results = []
@@ -1470,13 +1470,13 @@ def report8():
 
 #----------------------------------
 
-#Report 9: Display Number of Sales For Each Employee
+#Report 9: Display Number of Sales For Each Employee From Sales Department
 
 @app.route('/report9', methods=['GET'])
 def report9():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     cursor = connection.cursor(dictionary=True)
-    mysql = "select e.employee_id, concat(e.first_name,' ',e.last_name) employee_name, count(s.sales_id) total_sales from employee e inner join sales s  on s.employee_id = e.employee_id group by e.employee_id, e.first_name, e.last_name order by count(s.sales_id) desc"
+    mysql = "select e.employee_id, e.first_name, e.last_name, d.department_name, count(s.sales_id) total_sales from sales s inner join employee e  on e.employee_id = s.employee_id inner join department d  on d.department_id = e.department_id where d.department_name = 'Sales' group by e.employee_id, e.first_name, e.last_name order by count(s.sales_id) desc"
     cursor.execute(mysql)
     rows = cursor.fetchall()
     report9_results = []
@@ -1487,7 +1487,7 @@ def report9():
 
 #----------------------------------
 
-#Report 10: Subscription Total Revenue By Region For A Specific Year
+#Report 10: Subscription Total Revenue By Region For A Specific Year 2022
 
 
 @app.route('/report10', methods=['GET'])
@@ -1504,7 +1504,6 @@ def report10():
     return jsonify(report10_results)
 
 #----------------------------------
-
 
 
 app.run()
