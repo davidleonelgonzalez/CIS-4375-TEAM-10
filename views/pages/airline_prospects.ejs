@@ -1,0 +1,28 @@
+<%- include('../partials/head'); %>
+<link rel="stylesheet" href="../../public/css/styles.css">
+
+<style>
+  .nav-link {
+      color: white;
+  }
+  .navbar ul li .subnav {
+      position:absolute;
+  }
+</style>
+
+<div class="jumbotron" style="background-color:rgb(127, 191, 221)">
+    <h6><center>AIRLINE PROSPECT INFORMATION</center></h6>
+    <table>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+        </tr>
+        <% prospect.forEach(function(prospect) { %>
+        <tr>
+            <td><%= prospect.contact_first_name %></td>
+            <td><%= prospect.contact_last_name %></td> 
+        </tr>
+        
+        <% }); %>
+    </table>
+</div>
