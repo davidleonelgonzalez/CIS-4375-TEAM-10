@@ -23,10 +23,10 @@
 
 <main> 
     <div class="jumbotron" style="background-color:rgb(127, 191, 221)">
-        <h6><center>AIRLINE report1 INFORMATION</center></h6>
-        <% report1.forEach(function(report1) { %>
+        <h6><center><strong>Airline Prospect Information</strong></center></h6>
+        <% report2.forEach(function(report2) { %>
         <li>
-            Airline report1s:  <strong> <%= report1.airline_name %> </strong> <%= report1.address %> <%= report1.zip_code %> <%= report1.state_id %> <%= report1.country_id %> <%= report1.region_id %> <%= report1.report1_status_id %>
+           <strong> <%= report2.airline_name %> </strong> <%= report2.contact_first_name %> <%= report2.contact_last_name %> <%= report2.contact_email %> <%= report2.contact_phone_number %> <%= report2.address %> <%= report2.zip_code %>
         </li>
 
         <% }); %>

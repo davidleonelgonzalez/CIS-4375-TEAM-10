@@ -151,6 +151,7 @@ def addregion():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     request_data = request.get_json()
     region_name = request_data['region_name']
+    print(request_data)
     query = "INSERT INTO region (region_name) VALUES ('"+region_name+"')" 
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"
@@ -165,8 +166,8 @@ def updateregion():
     new_region_name = request_data["region_name"]
     update_region = """
     UPDATE region 
-    SET region_name = %s
-    WHERE region_id = %s """ % (new_region_name, id_update_region)
+    SET region_name = '{}'
+    WHERE region_id = '{}' """.format(new_region_name, id_update_region)
     execute_query(connection, update_region)
     return "PUT REQUEST IS GOOD!"
 
@@ -243,8 +244,8 @@ def updatecountry():
     id_update_region = request_data['region_id']
     update_country = """
     UPDATE country 
-    SET country_name = %s, region_id = %s
-    WHERE country_id = %s """ % (new_country_name, id_update_region, id_update_country)
+    SET country_name = '{}', region_id = '{}'
+    WHERE country_id = '{}' """.format(new_country_name, id_update_region, id_update_country)
     execute_query(connection, update_country)
     return "PUT REQUEST IS GOOD!"
 
@@ -321,8 +322,8 @@ def updatestate():
     id_update_country = request_data['country_id']
     update_state = """
     UPDATE state_providence 
-    SET state_providence_name = %s, country_id = %s
-    WHERE state_id = %s """ % (new_state_providence_name, id_update_country, id_update_state)
+    SET state_providence_name = '{}', country_id = '{}'
+    WHERE state_id = '{}' """.format(new_state_providence_name, id_update_country, id_update_state)
     execute_query(connection, update_state)
     return "PUT REQUEST IS GOOD!"
 
@@ -406,8 +407,8 @@ def updatevendor():
     new_hardware_type = request_data['hardware_type']
     update_vendor = """
     UPDATE vendor 
-    SET vendor_name = %s, vendor_phone = %s, vendor_email = %s, software_type = %s, hardware_type = %s
-    WHERE vendor_id = %s """ % (new_vendor_name, new_vendor_phone, new_vendor_email,new_software_type,new_hardware_type,id_update_vendor)
+    SET vendor_name = '{}', vendor_phone = '{}', vendor_email = '{}', software_type = '{}', hardware_type = '{}'
+    WHERE vendor_id = '{}' """.format(new_vendor_name, new_vendor_phone, new_vendor_email,new_software_type,new_hardware_type,id_update_vendor)
     execute_query(connection, update_vendor)
     return "PUT REQUEST IS GOOD!"
 
@@ -491,8 +492,8 @@ def updateserver():
     new_vendor_id = request_data['vendor_id']
     update_server = """
     UPDATE cloud_server 
-    SET vm_name = %s, vm_type = %s, server_number = %s, server_location = %s, vendor_d = %s
-    WHERE server_id = %s """ % (new_vm_name, new_vm_type, new_server_number, new_server_location, new_vendor_id, id_update_server)
+    SET vm_name = '{}', vm_type = '{}', server_number = '{}', server_location = '{}', vendor_d = '{}'
+    WHERE server_id = '{}' """.format(new_vm_name, new_vm_type, new_server_number, new_server_location, new_vendor_id, id_update_server)
     execute_query(connection, update_server)
     return "PUT REQUEST IS GOOD!"
 
@@ -580,8 +581,8 @@ def updateproduct():
     new_prospect_id = request_data['prospect_id']
     update_product = """
     UPDATE product 
-    SET product_sku = %s, product_name = %s, product_description = %s, category = %s, server_id = %s, client_id = %s, prospect_id = %s
-    WHERE product_id = %s """ % (new_product_sku, new_product_name, new_product_description, new_category, new_server_id, new_client_id, new_prospect_id, id_update_product)
+    SET product_sku = '{}', product_name = '{}', product_description = '{}', category = '{}', server_id = '{}', client_id = '{}', prospect_id = '{}'
+    WHERE product_id = '{}' """.format(new_product_sku, new_product_name, new_product_description, new_category, new_server_id, new_client_id, new_prospect_id, id_update_product)
     execute_query(connection, update_product)
     return "PUT REQUEST IS GOOD!"
 
@@ -656,8 +657,8 @@ def updatedepartment():
     new_department_name = request_data['department_name']
     update_department = """
     UPDATE department 
-    SET department_name = %s
-    WHERE department_id = %s """ % (new_department_name, id_update_department)
+    SET department_name = '{}'
+    WHERE department_id = '{}' """.format(new_department_name, id_update_department)
     execute_query(connection, update_department)
     return "PUT REQUEST IS GOOD!"
 
@@ -734,8 +735,8 @@ def updateemployee_status():
     new_status_name = request_data['status_name']
     update_employee_status = """
     UPDATE employee_status 
-    SET status_name = %s
-    WHERE employee_status_id = %s """ % (new_status_name, id_update_employee_status)
+    SET status_name = '{}'
+    WHERE employee_status_id = '{}' """.format(new_status_name, id_update_employee_status)
     execute_query(connection, update_employee_status)
     return "PUT REQUEST IS GOOD!"
 
@@ -812,8 +813,8 @@ def updateclient_status():
     new_status_name = request_data['status_name']
     update_client_status = """
     UPDATE client_status 
-    SET status_name = %s
-    WHERE client_status_id = %s """ % (new_status_name, id_update_client_status)
+    SET status_name = '{}'
+    WHERE client_status_id = '{}' """.format(new_status_name, id_update_client_status)
     execute_query(connection, update_client_status)
     return "PUT REQUEST IS GOOD!"
 
@@ -898,8 +899,8 @@ def updatesales():
     new_opportunity_name = request_data['opportunity_name']
     update_sales = """
     UPDATE sales 
-    SET employee_id = %s, prospect_id = %s
-    WHERE sales_id = %s """ % (new_employee_id, new_prospect_id, new_sales_status, new_sales_amount, new_opportunity_name, id_update_sales)
+    SET employee_id = '{}', prospect_id = '{}'
+    WHERE sales_id = '{}' """.format(new_employee_id, new_prospect_id, new_sales_status, new_sales_amount, new_opportunity_name, id_update_sales)
     execute_query(connection, update_sales)
     return "PUT REQUEST IS GOOD!"
 
@@ -1004,8 +1005,8 @@ def updateprospect():
     new_end_date = request_data['end_date']
     update_prospect = """
     UPDATE airline_prospect 
-    SET airline_name = %s, address = %s, zip_code = %s, state_id = %s, country_id = %s, region_id = %s, client_status_id = %s, start_date = %s, end_date = %s
-    WHERE prospect_id = %s """ % (new_airline_name, new_address, new_zip_code, new_state_id, new_country_id, new_region_id, new_client_status_id, new_start_date, new_end_date, id_update_prospect)
+    SET airline_name = '{}', address = '{}', zip_code = '{}', state_id = '{}', country_id = '{}', region_id = '{}', client_status_id = '{}', start_date = '{}', end_date = '{}'
+    WHERE prospect_id = '{}' """.format(new_airline_name, new_address, new_zip_code, new_state_id, new_country_id, new_region_id, new_client_status_id, new_start_date, new_end_date, id_update_prospect)
     execute_query(connection, update_prospect)
     return "PUT REQUEST IS GOOD!"
 
@@ -1115,8 +1116,8 @@ def updateclient():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     update_client = """
     UPDATE airline_client 
-    SET contact_first_name = %s, contact_last_name = %s, contact_phone_number = %s, contact_email = %s, airline_name = %s, address = %s, zip_code = %s, state_id = %s, country_id = %s, region_id = %s, client_status_id = %s, start_date = %s, end_date = %s, subscription_amount = %s
-    WHERE client_id = %s """ % (new_contact_first_name, new_contact_last_name, new_contact_phone_number, new_contact_email, new_airline_name, new_address, new_zip_code, new_state_id, new_country_id, new_region_id, new_client_status_id, new_start_date, new_end_date, new_subscription_amount, id_update_client)
+    SET contact_first_name = '{}', contact_last_name = '{}', contact_phone_number = '{}', contact_email = '{}', airline_name = '{}', address = '{}', zip_code = '{}', state_id = '{}', country_id = '{}', region_id = '{}', client_status_id = '{}', start_date = '{}', end_date = '{}', subscription_amount = '{}'
+    WHERE client_id = '{}' """.format(new_contact_first_name, new_contact_last_name, new_contact_phone_number, new_contact_email, new_airline_name, new_address, new_zip_code, new_state_id, new_country_id, new_region_id, new_client_status_id, new_start_date, new_end_date, new_subscription_amount, id_update_client)
     execute_query(connection, update_client)
     return "PUT REQUEST IS GOOD!"
 
@@ -1195,8 +1196,8 @@ def updateclient_employee():
     new_employee_id = request_data['employee_id']
     update_client_employee = """
     UPDATE client_employee 
-    SET client_id = %s, employee_id = %s
-    WHERE client_id = %s AND employee_id = %s """ % (new_client_id, new_employee_id)
+    SET client_id = '{}', employee_id = '{}'
+    WHERE client_id = '{}' AND employee_id = '{}' """.format(new_client_id, new_employee_id)
     execute_query(connection, update_client_employee)
     return "PUT REQUEST IS GOOD!"
 
@@ -1306,8 +1307,8 @@ def updateemployee():
     new_end_date = request_data['end_date']
     update_employee = """
     UPDATE employee 
-    SET first_name = %s, last_name = %s, phone_number = %s, email = %s, address = %s, zip_code = %s, state_id = %s, country_id = %s, region_id = %s, department_id = %s, employee_status_id = %s, start_date = %s, end_date = %s
-    WHERE client_employee_id = %s """ % (new_first_name, new_last_name, new_phone_number, new_email, new_address, new_zip_code, new_state_id, new_country_id, new_region_id, new_department_id, new_employee_status_id, new_start_date, new_end_date, id_update_employee)
+    SET first_name = '{}', last_name = '{}', phone_number = '{}', email = '{}', address = '{}', zip_code = '{}', state_id = '{}', country_id = '{}', region_id = '{}', department_id = '{}', employee_status_id = '{}', start_date = '{}', end_date = '{}'
+    WHERE client_employee_id = '{}' """.format(new_first_name, new_last_name, new_phone_number, new_email, new_address, new_zip_code, new_state_id, new_country_id, new_region_id, new_department_id, new_employee_status_id, new_start_date, new_end_date, id_update_employee)
     execute_query(connection, update_employee)
     return "PUT REQUEST IS GOOD!"
 
@@ -1331,8 +1332,8 @@ def deleteemployee():
 def report1():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     cursor = connection.cursor(dictionary=True)
-    mysql = "SELECT DISTINCT ac.client_id, ac.contact_first_name, ac.contact_last_name, ac.contact_phone_number, ac.contact_email, ac.airline_name, ac.address, ac.zip_code, s.state_providence_name, c.country_name, r.region_name, cs.status_name, ac.start_date, ac.end_date, ac.subscription_amount FROM airline_client AS ac INNER JOIN state_providence AS s ON ac.state_id = s.state_id INNER JOIN country AS c ON ac.country_id = c.country_id INNER JOIN region AS r ON ac.region_id = r.region_id INNER JOIN client_status AS cs ON ac.client_status_id = cs.client_status_id ORDER BY ac.airline_name"
-
+    #mysql = "SELECT ac.client_id, ac.contact_first_name, ac.contact_last_name, ac.contact_phone_number, ac.contact_email, ac.airline_name, ac.address, ac.zip_code, s.state_providence_name, c.country_name, r.region_name, cs.status_name, ac.start_date, ac.end_date, ac.subscription_amount FROM airline_client AS ac INNER JOIN state_providence AS s ON ac.state_id = s.state_id INNER JOIN country AS c ON ac.country_id = c.country_id INNER JOIN region AS r ON ac.region_id = r.region_id INNER JOIN client_status AS cs ON ac.client_status_id = cs.client_status_id ORDER BY ac.airline_name"
+    mysql = "SELECT * FROM airline_client"
     cursor.execute(mysql)
     rows = cursor.fetchall()
     report1_results = []
@@ -1350,7 +1351,8 @@ def report1():
 def report2():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     cursor = connection.cursor(dictionary=True)
-    mysql = "SELECT DISTINCT ap.prospect_id, ap.contact_first_name, ap.contact_last_name, ap.contact_phone_number, ap.contact_email, ap.airline_name, ap.address, ap.zip_code, s.state_providence_name, c.country_name, r.region_name, cs.status_name, ap.start_date, ap.end_date FROM airline_prospect AS ap INNER JOIN state_providence AS s ON ap.state_id = s.state_id INNER JOIN country AS c ON ap.country_id = c.country_id INNER JOIN region AS r ON ap.region_id = r.region_id INNER JOIN client_status AS cs ON ap.client_status_id = cs.client_status_id ORDER BY ap.airline_name"
+    #mysql = "SELECT DISTINCT ap.prospect_id, ap.contact_first_name, ap.contact_last_name, ap.contact_phone_number, ap.contact_email, ap.airline_name, ap.address, ap.zip_code, s.state_providence_name, c.country_name, r.region_name, cs.status_name, ap.start_date, ap.end_date FROM airline_prospect AS ap INNER JOIN state_providence AS s ON ap.state_id = s.state_id INNER JOIN country AS c ON ap.country_id = c.country_id INNER JOIN region AS r ON ap.region_id = r.region_id INNER JOIN client_status AS cs ON ap.client_status_id = cs.client_status_id ORDER BY ap.airline_name"
+    mysql = "SELECT * FROM airline_prospect"
     cursor.execute(mysql)
     rows = cursor.fetchall()
     report2_results = []

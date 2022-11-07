@@ -878,7 +878,7 @@ app.get('/prospect', function(req, res) {
       var prospect = response.data;
 
 
-      res.render('pages/prospect', {
+      res.render('pages/airline_prospects', {
         prospect: prospect
   });
 });
@@ -1310,7 +1310,7 @@ app.get('/report1', function(req, res) {
       var report1 = response.data;
 
 
-      res.render('pages/report', {
+      res.render('pages/report1', {
         report1: report1
   });
 });
@@ -1325,7 +1325,7 @@ app.get('/report2', function(req, res) {
       var report2 = response.data;
 
 
-      res.render('pages/report', {
+      res.render('pages/report2', {
         report2: report2
   });
 });
@@ -1340,7 +1340,7 @@ app.get('/report3', function(req, res) {
       var report3 = response.data;
 
 
-      res.render('pages/report', {
+      res.render('pages/report3', {
         report3: report3
   });
 });
@@ -1355,7 +1355,7 @@ app.get('/report4', function(req, res) {
       var report4 = response.data;
 
 
-      res.render('pages/report', {
+      res.render('pages/report4', {
         report4: report4
   });
 });
@@ -1370,7 +1370,7 @@ app.get('/report5', function(req, res) {
       var report5 = response.data;
 
 
-      res.render('pages/report', {
+      res.render('pages/report5', {
         report5: report5
   });
 });
@@ -1385,7 +1385,7 @@ app.get('/report6', function(req, res) {
       var report6 = response.data;
 
 
-      res.render('pages/report', {
+      res.render('pages/report6', {
         report6: report6
   });
 });
@@ -1400,7 +1400,7 @@ app.get('/report7', function(req, res) {
       var report7 = response.data;
 
 
-      res.render('pages/report', {
+      res.render('pages/report7', {
         report7: report7
   });
 });
@@ -1414,7 +1414,7 @@ app.get('/report8', function(req, res) {
       var report8 = response.data;
 
 
-      res.render('pages/report', {
+      res.render('pages/report8', {
         report8: report8
   });
 });
@@ -1428,7 +1428,7 @@ app.get('/report9', function(req, res) {
       var report9 = response.data;
 
 
-      res.render('pages/report', {
+      res.render('pages/report9', {
         report9: report9
   });
 });
@@ -1442,7 +1442,7 @@ app.get('/report10', function(req, res) {
       var report10 = response.data;
 
 
-      res.render('pages/report', {
+      res.render('pages/report10', {
         report10: report10
   });
 });
