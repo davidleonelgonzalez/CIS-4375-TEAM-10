@@ -19,6 +19,24 @@ const PORT = process.env.PORT || 5000;
 
 //login--------------------------------------------------------------------------------------------------------------------------
 
+app.post('/addtest', function(req, res){
+  var addTextf = req.body.textf;
+
+  axios.post(`http://127.0.0.1:5000/addtest`,{
+    
+    textf: addTextf
+
+
+    })
+    .then(function(response) {
+      console.log(response.data);
+    })
+
+  res.render('pages/submit')
+
+});
+
+
 app.get('/login', function(req, res) {
 
     var username = req.body.username
@@ -35,6 +53,65 @@ app.get('/login', function(req, res) {
 //-------------------------------------------------------------------------------------------------------------------------------
 
 //home----------------------------------------------------------------------------------------------------------------------------
+
+app.get('/add_client', function(req, res) {
+
+
+  res.render('pages/add_client', {
+
+});
+});
+
+app.get('/add_employee', function(req, res) {
+
+
+  res.render('pages/add_employee', {
+
+});
+});
+
+app.get('/add_product', function(req, res) {
+
+
+  res.render('pages/add_product', {
+
+});
+});
+
+
+app.get('/add_prospect', function(req, res) {
+
+
+  res.render('pages/add_prospect', {
+
+});
+});
+
+
+app.get('/add_sale', function(req, res) {
+
+
+  res.render('pages/add_sale', {
+
+});
+});
+
+app.get('/add_server', function(req, res) {
+
+
+  res.render('pages/add_server', {
+
+});
+});
+
+app.get('/add_vendor', function(req, res) {
+
+
+  res.render('pages/add_vendor', {
+
+});
+});
+
 
 app.get('/test', function(req, res) {
 
@@ -871,36 +948,35 @@ app.delete('/deletesales', function(req, res){
 
 //airline prospect ---------------------------------------------------------
 
-app.get('/prospect', function(req, res) {
-  axios.get(`http://127.0.0.1:5000/prospect/all`)
-  .then((response)=>{
-      
-      var prospect = response.data;
-
-
-      res.render('pages/airline_prospects', {
-        prospect: prospect
-  });
-});
-
 app.post('/addprospect', function(req, res){
-  var addAirlineName = req.body.airline_name;
   var addAddress = req.body.address;
-  var addZipCode = req.body.zip_code;
-  var addStateID = req.body.stateID;
+  var addAirlineName = req.body.airline_name;
+  var addClientStatusID = req.body.client_status_id;
+  var addContactEmail = req.body.contact_email;
+  var addContactFirstName = req.body.contact_first_name;
+  var addContactLastName = req.body.contact_last_name;
+  var addContactPhoneNumber = req.body.contact_phone_number;
   var addCountryID = req.body.country_id;
+  var addEndDate = req.body.end_date;
   var addRegionID = req.body.region_id;
-  var addClientStatusID = req.body.address;
+  var addStartDate = req.body.start_date;
+  var addStateID = req.body.state_id;
+  var addZipCode = req.body.zip_code;
 
   axios.post(`http://127.0.0.1:5000/addprospect`,{
-    
-    airline_name: addAirlineName,
     address: addAddress,
-    zip_code: addZipCode,
-    state_id: addStateID,
+    airline_name: addAirlineName,
+    client_status_id: addClientStatusID,
+    contact_email: addContactEmail,
+    contact_first_name: addContactFirstName,
+    contact_last_name: addContactLastName,
+    contact_phone_number: addContactPhoneNumber,
     country_id: addCountryID,
+    end_date: addEndDate,
     region_id: addRegionID,
-    client_status_id: addClientStatusID
+    start_date: addStartDate,
+    state_id: addStateID,
+    zip_code: addZipCode,
 
     })
     .then(function(response) {
@@ -910,7 +986,7 @@ app.post('/addprospect', function(req, res){
   res.render('pages/submit')
 
 });
-});
+
 
 
 app.put('/updateprospect', function(req, res){
@@ -976,46 +1052,48 @@ app.delete('/deleteprospect', function(req, res){
 
 //airline client -----------------------------------------------------------
 
-app.get('/client', function(req, res) {
-  axios.get(`http://127.0.0.1:5000/client/all`)
-  .then((response)=>{
-      
-      var client = response.data;
-
-
-      res.render('pages/airline_client', {
-        client: client
-  });
-});
 
 app.post('/addclient', function(req, res){
+  var addContactFirstName = req.body.contact_first_name;
+  var addContactLastName = req.body.contact_last_name;
+  var addContactPhoneNumber = req.body.contact_phone_number;
+  var addContactEmail = req.body.contact_email;
   var addAirlineName = req.body.airline_name;
   var addAddress = req.body.address;
   var addZipCode = req.body.zip_code;
-  var addStateID = req.body.stateID;
+  var addStateID = req.body.state_id;
   var addCountryID = req.body.country_id;
   var addRegionID = req.body.region_id;
-  var addClientStatusID = req.body.address;
+  var addClientStatusID = req.body.client_status_id;
+  var addStartDate = req.body.start_date;
+  var addEndDate = req.body.end_date;
+  var addSubscriptionAmount = req.body.subscription_amount;
 
   axios.post(`http://127.0.0.1:5000/addclient`,{
-    
+    contact_first_name: addContactFirstName,
+    contact_last_name: addContactLastName,
+    contact_phone_number: addContactPhoneNumber,
+    contact_email: addContactEmail,
     airline_name: addAirlineName,
     address: addAddress,
     zip_code: addZipCode,
     state_id: addStateID,
     country_id: addCountryID,
     region_id: addRegionID,
-    client_status_id: addClientStatusID
+    client_status_id: addClientStatusID,
+    start_date: addStartDate,
+    end_date: addEndDate,
+    subscription_amount: addSubscriptionAmount
 
     })
     .then(function(response) {
       console.log(response.data);
     })
 
-    res.render('pages/submit', {body: req.body.airline_name + "Airline Added"})
+    res.render('pages/submit')
 
 });
-});
+
 
 
 app.put('/updateclient', function(req, res){
@@ -1160,17 +1238,6 @@ app.delete('/deleteclient_employee', function(req, res){
 
 //employee -----------------------------------------------------------------
 
-app.get('/employee', function(req, res) {
-  axios.get(`http://127.0.0.1:5000/employee/all`)
-  .then((response)=>{
-      
-      var employee = response.data;
-
-
-      res.render('pages/employee', {
-        employee: employee
-  });
-});
 
 app.post('/addemployee', function(req, res){
   var addFirstName = req.body.first_name;
@@ -1179,12 +1246,15 @@ app.post('/addemployee', function(req, res){
   var addEmail = req.body.email;
   var addAddress = req.body.address;
   var addZipCode = req.body.zip_code;
-  var addStateID = req.body.stateID;
+  var addStateID = req.body.state_id;
   var addCountryID = req.body.country_id;
   var addRegionID = req.body.region_id;
   var addDepartmentID = req.body.department_id;
   var addEmployeeStatusID = req.body.employee_status_id;
   var addClientEmployeeID = req.body.client_employee_id;
+  var addStartDate = req.body.start_date;
+  var addEndDate = req.body.end_date;
+
 
   axios.post(`http://127.0.0.1:5000/addemployee`,{
     
@@ -1199,7 +1269,9 @@ app.post('/addemployee', function(req, res){
     region_id: addRegionID,
     department_id: addDepartmentID,
     employee_status_id: addEmployeeStatusID,
-    client_employee_id: addClientEmployeeID
+    client_employee_id: addClientEmployeeID,
+    start_date: addStartDate,
+    end_date: addEndDate
 
     })
     .then(function(response) {
@@ -1209,7 +1281,7 @@ app.post('/addemployee', function(req, res){
   res.render('pages/submit')
 
 });
-});
+
 
 
 app.put('/updateemployee', function(req, res){

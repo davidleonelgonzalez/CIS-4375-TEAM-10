@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    table, th, td {
+        border:1px solid black;
+    }
+</style>
+<body class="container">
+<body style="background-color: #DBF2FF;">
+<%- include('../partials/head'); %>
+<%- include('../partials/header'); %>
+<style>
+    .btn {
+      background-color: DodgerBlue;
+      border: none;
+      color: white;
+      padding: 12px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+    /* Darker background on mouse-over */
+    .btn:hover {
+      background-color: RoyalBlue;
+    }
+    </style>
+
+<main> 
+    
+
+    <div class="jumbotron">
+        <form action="/addsales" method="post">
+            <center>
+                <h2>Add Sale</h2>
+                <strong>Input Fields To Add A Sale Below:</strong>
+                <div class="form-group">
+                    <input type="text" id="contact_first_name" name="contact_first_name" class="form-control" placeholder="First Name" required autofocus>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="contact_last_name" name="contact_last_name" class="form-control" placeholder="Last Name" required autofocus>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="contact_phone_number" name="contact_phone_number" class="form-control" placeholder="Phone Number" autofocus>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="contact_email" name="contact_email" class="form-control" placeholder="Email"  autofocus>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="airline_name" name="airline_name" class="form-control" placeholder="Airline" required autofocus>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="address" name="address" class="form-control" placeholder="Address" required autofocus>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="zip_code" name="zip_code" class="form-control" placeholder="Zip Code" required autofocus>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="state_id" name="state_id" class="form-control" placeholder="State ID" required autofocus>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="country_id" name="country_id" class="form-control" placeholder="Country ID" required autofocus>
+                </div>     
+                <div class="form-group">
+                    <input type="text" id="region_id" name="region_id" class="form-control" placeholder="Region ID" required autofocus>
+                </div>   
+                <div class="form-group">
+                    <input type="text" id="client_status_id" name="client_status_id" class="form-control" placeholder="client_status_id" required autofocus>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="start_date" name="start_date" class="form-control" placeholder="Start Date"  autofocus>
+                </div>     
+                <div class="form-group">
+                    <input type="text" id="end_date" name="end_date" class="form-control" placeholder="End Date"  autofocus>
+                </div>  
+                <div class="form-group">
+                    <input type="text" id="subscription_amt" name="subscription_amt" class="form-control" placeholder="Subscription Amount"  autofocus>
+                </div>           
+                <input class="btn btn-lg btn-primary btn-block" type="submit" style="background-color:rgb(29, 184, 101)">
+            </center>
+        </form>
+    </div>
+
+<ul>
+    <a href="/"><button class="btn"><i class="fa fa-home"></i> Home</button></a>
+
+</main>
+
+
+</body>
+</body>
+</html>

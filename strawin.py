@@ -105,7 +105,28 @@ def login():
     return 'YOU ARE NOT AUTHORIZED'
 
 
+@app.route('/test/all', methods=['GET'])
+def api_all_test():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    cursor = connection.cursor(dictionary=True)
+    mysql = "SELECT * FROM tester"
+    cursor.execute(mysql)
+    rows = cursor.fetchall()
+    test_results = []
+    for test in rows:
+        test_results.append(test)
 
+    return jsonify(test_results)
+
+@app.route('/addtest', methods=['POST'])
+def addtest():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
+    request_data = request.get_json()
+    textf = request_data['textf']
+    print(request_data)
+    query = "INSERT INTO tester (textf) VALUES ('"+textf+"')" 
+    execute_query(connection, query)
+    return "POST REQUEST IS GOOD!"
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------
 #1
@@ -957,9 +978,10 @@ def api_prospect_id():
 
     return jsonify(prospect_results)
 
-#date  is still not working
+
 @app.route('/addprospect', methods=['POST'])
 def addprospect():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     request_data = request.get_json()
     start_date = datetime.datetime(2022,1,10)
     end_date = datetime.datetime(2022,1,10)
@@ -978,7 +1000,6 @@ def addprospect():
     client_status_id = request_data['client_status_id']
     start_date = request_data['start_date']
     end_date = request_data['end_date']  
-    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     query = "INSERT INTO airline_prospect (contact_first_name, contact_last_name, contact_phone_number, contact_email, airline_name, address, zip_code, state_id, country_id, region_id, client_status_id, start_date, end_date) VALUES ('"+contact_first_name+"', '"+contact_last_name+"', '"+contact_phone_number+"','"+contact_email+"', '"+airline_name+"','"+address+"', '"+zip_code+"','"+state_id+"', '"+country_id+"', '"+region_id+"','"+client_status_id+"', '"+start_date+"', '"+end_date+"')" 
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"

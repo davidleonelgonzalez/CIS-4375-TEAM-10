@@ -7,4 +7,5 @@
 -Application should appear to run on localhost port 5000!
 
 
-
+Referenced some code from Otto's course
+Referenced all bootstrap from https://getbootstrap.com/docs/5.2/getting-started/introduction/
