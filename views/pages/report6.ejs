@@ -1,8 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+  table, th, td {
+    border:1px solid black;
+  }
+</style>
+
 <%- include('../partials/head'); %>
 
 <body class="container">
+<body style="background-color: #E1AEAE;"
+
 <%- include('../partials/header'); %>
 
 <style>
@@ -22,24 +30,42 @@
     </style>
 
 <main> 
+    <br>
     <div class="jumbotron" style="background-color:rgb(127, 191, 221)">
-        <h6><center><strong>Airline Prospect Information</strong></center></h6>
-        <% report2.forEach(function(report2) { %>
-        <li>
-           <strong> <%= report2.airline_name %> </strong> <%= report2.contact_first_name %> <%= report2.contact_last_name %> <%= report2.contact_email %> <%= report2.contact_phone_number %> <%= report2.address %> <%= report2.zip_code %>
-        </li>
-
-        <% }); %>
-    </div>
-
+      <h6><center><strong>PROSPECT AND PRODUCT</strong></center></h6>
+        <table style="width: 100%;">
+          <tr>
+              <th>Airline</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Address</th>
+              <th>Zip Code</th>
+              <th>Email</th>
+              <th>Phone Number</th>
+          </tr>
+          <% report6.forEach(function(report6) { %>
+          <tr>
+              <td><%= report6.airline_name %></td>
+              <td><%= report6.contact_first_name %></td>
+              <td><%= report6.contact_last_name %></td> 
+              <td><%= report6.address %></td> 
+              <td><%= report6.zip_code %></td>
+              <td><%= report6.contact_email %></td> 
+              <td><%= report6.contact_phone_number %></td> 
+              <td><%= report6.report6_status_id %></td> 
+          </tr>
+          
+          <% }); %>
+      </table>
+  </div>
     
-
+<br>
 <ul>
-    <a href="/"><button class="btn"><i class="fa fa-home"></i> Home</button></a>
-
+  <a href="/reports"><button class="btn"><i class="fa fa-home"></i> Back</button></a>
+</ul>
 </main>
 
 
-
+</body>
 </body>
 </html>

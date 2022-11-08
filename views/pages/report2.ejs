@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+    table, th, td {
+      border:1px solid black;
+    }
+</style>
 <%- include('../partials/head'); %>
 
 <body class="container">
-<body style="background-color: #000000;"
+<body style="background-color: #E1AEAE;"
 <%- include('../partials/header'); %>
 
 <style>
@@ -25,20 +30,29 @@
 <main> 
     <br>
     <div class="jumbotron" style="background-color:rgb(127, 191, 221)">
-        <h6><center><strong>Airline Prospect Information</strong></center></h6>
-        <% report2.forEach(function(report2) { %>
-        <li>
-           <strong> <%= report2.airline_name %> </strong> <%= report2.contact_first_name %> <%= report2.contact_last_name %> <%= report2.contact_email %> <%= report2.contact_phone_number %> <%= report2.address %> <%= report2.zip_code %>
-        </li>
-
-        <% }); %>
-    </div>
+      <h6><center><strong>AIRLINE PROSPECT INFORMATION</strong></center></h6>
+        <table style="width:100%">
+          <tr>
+              <th>Airline</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+          </tr>
+          <% report2.forEach(function(report2) { %>
+          <tr>
+              <td><%= report2.airline_name %></td>
+              <td><%= report2.contact_first_name %></td>
+              <td><%= report2.contact_last_name %></td> 
+          </tr>
+          
+          <% }); %>
+      </table>
+  </div>
 
     
-
+<br>
 <ul>
-    <a href="/"><button class="btn"><i class="fa fa-home"></i> Home</button></a>
-
+  <a href="/reports"><button class="btn"><i class="fa fa-home"></i> Back</button></a>
+</ul>
 </main>
 
 
