@@ -9,7 +9,7 @@
 <%- include('../partials/head'); %>
 
 <body class="container">
-<body style="background-color: #E1AEAE;"
+<body style="background-color: #DBF2FF;"
 
 <%- include('../partials/header'); %>
 
@@ -31,28 +31,27 @@
 
 <main> 
     <br>
-    <div class="jumbotron" style="background-color:rgb(127, 191, 221)">
+    <div class="jumbotron" style="background-color:#A4BCE0">
       <h6><center><strong>CLOUD AND PRODUCT</strong></center></h6>
       <table style="width: 100%;">
           <tr>
-              <th>Airline</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Address</th>
-              <th>Zip Code</th>
-              <th>Email</th>
-              <th>Phone Number</th>
+              <th>Server ID</th>
+              <th>Server Location</th>
+              <th>Server Number</th>
+              <th>Total Products</th>
+              <th>VM Name</th>
+              <th>VM Type</th>
+           
           </tr>
           <% report7.forEach(function(report7) { %>
           <tr>
-              <td><%= report7.airline_name %></td>
-              <td><%= report7.contact_first_name %></td>
-              <td><%= report7.contact_last_name %></td> 
-              <td><%= report7.address %></td> 
-              <td><%= report7.zip_code %></td>
-              <td><%= report7.contact_email %></td> 
-              <td><%= report7.contact_phone_number %></td> 
-              <td><%= report7.report7_status_id %></td> 
+              <td><%= report7.server_id %></td>
+              <td><%= report7.server_location %></td>
+              <td><%= report7.server_number %></td> 
+              <td><%= report7.total_products %></td> 
+              <td><%= report7.vm_name %></td>
+              <td><%= report7.vm_type %></td> 
+          
           </tr>
           
           <% }); %>

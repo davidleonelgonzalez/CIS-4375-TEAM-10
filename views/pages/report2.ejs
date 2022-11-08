@@ -8,7 +8,7 @@
 <%- include('../partials/head'); %>
 
 <body class="container">
-<body style="background-color: #E1AEAE;"
+<body style="background-color: #DBF2FF"
 <%- include('../partials/header'); %>
 
 <style>
@@ -29,23 +29,40 @@
 
 <main> 
     <br>
-    <div class="jumbotron" style="background-color:rgb(127, 191, 221)">
+    <div class="jumbotron" style="background-color:#A4BCE0">
       <h6><center><strong>AIRLINE PROSPECT INFORMATION</strong></center></h6>
         <table style="width:100%">
           <tr>
-              <th>Airline</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Address</th>
-              <th>Email</th>
-              <th>Phone Number</th>
+            <th>Prospect ID</th>
+            <th>Airline</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Address</th>
+            <th>Zip Code</th>
+            <th>State</th>
+            <th>Country</th>
+            <th>Region</th>
+            <th>Status</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            
           </tr>
           <% report2.forEach(function(report2) { %>
           <tr>
+              <td><%= report2.prospect_id %></td>
               <td><%= report2.airline_name %></td>
               <td><%= report2.contact_first_name %></td>
               <td><%= report2.contact_last_name %></td> 
               <td><%= report2.address %></td> 
+              <td><%= report2.zip_code %></td>
+              <td><%= report2.state_providence_name %></td>
+              <td><%= report2.country_name %></td>
+              <td><%= report2.region_name %></td>
+              <td><%= report2.status_name %></td>
+              <td><%= report2.start_date %></td>
+              <td><%= report2.end_date %></td>
               <td><%= report2.contact_email %></td> 
               <td><%= report2.contact_phone_number %></td> 
           </tr>

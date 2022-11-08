@@ -9,7 +9,7 @@
 <%- include('../partials/head'); %>
 
 <body class="container">
-<body style="background-color: #E1AEAE;"
+<body style="background-color: #DBF2FF;"
 
 <%- include('../partials/header'); %>
 
@@ -31,7 +31,7 @@
 
 <main> 
     <br>
-    <div class="jumbotron" style="background-color:rgb(127, 191, 221)">
+    <div class="jumbotron" style="background-color:#A4BCE0">
       <h6><center><strong>CLIENTS PER REGION</strong></center></h6>
       <table style="width: 100%;">
           <tr>
@@ -39,20 +39,19 @@
               <th>Asia</th>
               <th>Europe</th>
               <th>Middle East</th>
-              <th>Zip Code</th>
-              <th>Email</th>
-              <th>Phone Number</th>
+              <th>North America</th>
+              <th>South America</th>
+              <th>Oceania</th>
           </tr>
           <% report3.forEach(function(report3) { %>
           <tr>
-              <td><%= report3.airline_name %></td>
-              <td><%= report3.contact_first_name %></td>
-              <td><%= report3.contact_last_name %></td> 
-              <td><%= report3.address %></td> 
-              <td><%= report3.zip_code %></td>
-              <td><%= report3.contact_email %></td> 
-              <td><%= report3.contact_phone_number %></td> 
-              <td><%= report3.report3_status_id %></td> 
+              <td><%= report3.Africa %></td>
+              <td><%= report3.Asia %></td>
+              <td><%= report3.Europe %></td> 
+              <td><%= report3.Middle_East %></td> 
+              <td><%= report3.North_America %></td>
+              <td><%= report3.South_America %></td> 
+              <td><%= report3.Oceania %></td> 
           </tr>
           
           <% }); %>

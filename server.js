@@ -1408,7 +1408,7 @@ app.get('/report7', function(req, res) {
 
 //Report 8 ------------------------------------------------------------------
 app.get('/report8', function(req, res) {
-  axios.get(`http://127.0.0.1:5000/report7`)
+  axios.get(`http://127.0.0.1:5000/report8`)
   .then((response)=>{
       
       var report8 = response.data;
@@ -1422,7 +1422,7 @@ app.get('/report8', function(req, res) {
 
 //Report 9 ------------------------------------------------------------------
 app.get('/report9', function(req, res) {
-  axios.get(`http://127.0.0.1:5000/report7`)
+  axios.get(`http://127.0.0.1:5000/report9`)
   .then((response)=>{
       
       var report9 = response.data;
@@ -1436,7 +1436,7 @@ app.get('/report9', function(req, res) {
 
 //Report 10 ------------------------------------------------------------------
 app.get('/report10', function(req, res) {
-  axios.get(`http://127.0.0.1:5000/report7`)
+  axios.get(`http://127.0.0.1:5000/report10`)
   .then((response)=>{
       
       var report10 = response.data;

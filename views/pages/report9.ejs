@@ -9,7 +9,7 @@
 <%- include('../partials/head'); %>
 
 <body class="container">
-<body style="background-color: #E1AEAE;"
+<body style="background-color: #DBF2FF;"
 
 <%- include('../partials/header'); %>
 
@@ -31,28 +31,25 @@
 
 <main> 
     <br>
-    <div class="jumbotron" style="background-color:rgb(127, 191, 221)">
+    <div class="jumbotron" style="background-color:#A4BCE0">
       <h6><center><strong>EMPLOYEE SALES</strong></center></h6>
       <table style="width: 100%;">
           <tr>
-              <th>Airline</th>
+              <th>Employee ID</th>
+              <th>Department</th>
               <th>First Name</th>
               <th>Last Name</th>
-              <th>Address</th>
-              <th>Zip Code</th>
-              <th>Email</th>
-              <th>Phone Number</th>
+              <th>Total Sales</th>
+              
           </tr>
           <% report9.forEach(function(report9) { %>
           <tr>
-              <td><%= report9.airline_name %></td>
-              <td><%= report9.contact_first_name %></td>
-              <td><%= report9.contact_last_name %></td> 
-              <td><%= report9.address %></td> 
-              <td><%= report9.zip_code %></td>
-              <td><%= report9.contact_email %></td> 
-              <td><%= report9.contact_phone_number %></td> 
-              <td><%= report9.report9_status_id %></td> 
+              <td><%= report9.employee_id %></td>
+              <td><%= report9.department_name %></td>
+              <td><%= report9.first_name %></td> 
+              <td><%= report9.last_name %></td> 
+              <td><%= report9.total_sales %></td>
+            
           </tr>
           
           <% }); %>
