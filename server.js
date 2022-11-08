@@ -787,7 +787,6 @@ app.post('/addemployee_status', function(req, res){
   res.render('pages/submit')
 
 });
-});
 
 
 app.all('/updateemployee_status', function(req, res){
