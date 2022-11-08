@@ -36,12 +36,18 @@
               <th>Airline</th>
               <th>First Name</th>
               <th>Last Name</th>
+              <th>Address</th>
+              <th>Email</th>
+              <th>Phone Number</th>
           </tr>
           <% report2.forEach(function(report2) { %>
           <tr>
               <td><%= report2.airline_name %></td>
               <td><%= report2.contact_first_name %></td>
               <td><%= report2.contact_last_name %></td> 
+              <td><%= report2.address %></td> 
+              <td><%= report2.contact_email %></td> 
+              <td><%= report2.contact_phone_number %></td> 
           </tr>
           
           <% }); %>
