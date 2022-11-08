@@ -488,13 +488,13 @@ def api_server_id():
 
 @app.route('/addserver', methods=['POST'])
 def addserver():
+    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     request_data = request.get_json()
     vm_name = request_data['vm_name']
     vm_type = request_data['vm_type']
     server_number = request_data['server_number']
     server_location = request_data['server_location']
     vendor_id = request_data['vendor_id']
-    connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     query = "INSERT INTO cloud_server (vm_name, vm_type, server_number, server_location, vendor_id) VALUES ('"+vm_name+"','"+vm_type+"', '"+server_number+"', '"+server_location+"', '"+vendor_id+"')" 
     execute_query(connection, query)
     return "POST REQUEST IS GOOD!"

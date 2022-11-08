@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    table, th, td {
+        border:1px solid black;
+    }
+</style>
+<body class="container">
+<body style="background-color: #DBF2FF;">
+<%- include('../partials/head'); %>
+<%- include('../partials/header'); %>
+<style>
+    .btn {
+      background-color: DodgerBlue;
+      border: none;
+      color: white;
+      padding: 12px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+    /* Darker background on mouse-over */
+    .btn:hover {
+      background-color: RoyalBlue;
+    }
+    </style>
+
+<main> 
+    
+
+    <div class="jumbotron">
+        <form action="/updatevendor" method="PUT">
+            <center>
+                <h2>Update Vendor</h2>
+                <strong>Input Fields To Update Vendor Below:</strong>
+                <div class="form-group">
+                    <input type="text" id="vendor_id" name="vendor_id" class="form-control" placeholder="Vendor ID to Update" required autofocus>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="vendor_name" name="vendor_name" class="form-control" placeholder="Vendor Name" required autofocus>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="vendor_phone" name="vendor_phone" class="form-control" placeholder="Vendor Phone" required autofocus>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="vendor_email" name="vendor_email" class="form-control" placeholder="Vendor Email" autofocus>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="software_type" name="software_type" class="form-control" placeholder="Software Type"  autofocus>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="hardware_type" name="hardware_type" class="form-control" placeholder="Hardware Type" required autofocus>
+                </div>
+           
+                <input class="btn btn-lg btn-primary btn-block" type="submit" value="Update" style="background-color:rgb(29, 184, 101)">
+            </center>
+        </form>
+    </div>
+
+<ul>
+    <a href="/"><button class="btn"><i class="fa fa-home"></i> Home</button></a>
+
+</main>
+
+
+</body>
+</body>
+</html>

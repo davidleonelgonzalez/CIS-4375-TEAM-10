@@ -17,42 +17,14 @@ app.use(express.static(publicDir));
 
 const PORT = process.env.PORT || 5000;
 
-//login--------------------------------------------------------------------------------------------------------------------------
-
-app.post('/addtest', function(req, res){
-  var addTextf = req.body.textf;
-
-  axios.post(`http://127.0.0.1:5000/addtest`,{
-    
-    textf: addTextf
-
-
-    })
-    .then(function(response) {
-      console.log(response.data);
-    })
-
-  res.render('pages/submit')
-
-});
-
-
-app.get('/login', function(req, res) {
-
-    var username = req.body.username
-
-    var password = req.body.password
-
-    console.log(username)
-
-
-    res.render('pages/login', {
-
-  });
-});
-//-------------------------------------------------------------------------------------------------------------------------------
-
 //home----------------------------------------------------------------------------------------------------------------------------
+app.get('/', function(req, res) {
+  res.render('pages/home', {
+
+});
+});
+
+//CRUD----------------------------------------------------------------------------------------------------------------------------
 
 app.get('/add_client', function(req, res) {
 
@@ -112,7 +84,118 @@ app.get('/add_vendor', function(req, res) {
 });
 });
 
+app.get('/update_client', function(req, res) {
 
+
+  res.render('pages/update_client', {
+
+});
+});
+
+app.get('/update_employee', function(req, res) {
+
+
+  res.render('pages/update_employee', {
+
+});
+});
+
+app.get('/update_product', function(req, res) {
+
+
+  res.render('pages/update_product', {
+
+});
+});
+
+app.get('/update_prospect', function(req, res) {
+
+
+  res.render('pages/update_prospect', {
+
+});
+});
+
+app.get('/update_sale', function(req, res) {
+
+
+  res.render('pages/update_sale', {
+
+});
+});
+
+app.get('/update_server', function(req, res) {
+
+
+  res.render('pages/update_server', {
+
+});
+});
+
+app.get('/update_vendor', function(req, res) {
+
+
+  res.render('pages/update_vendor', {
+
+});
+});
+
+app.get('/delete_client', function(req, res) {
+
+
+  res.render('pages/delete_client', {
+
+});
+});
+
+app.get('/delete_employee', function(req, res) {
+
+
+  res.render('pages/delete_employee', {
+
+});
+});
+
+app.get('/delete_product', function(req, res) {
+
+
+  res.render('pages/delete_product', {
+
+});
+});
+
+app.get('/delete_prospect', function(req, res) {
+
+
+  res.render('pages/delete_prospect', {
+
+});
+});
+
+app.get('/delete_sale', function(req, res) {
+
+
+  res.render('pages/delete_sale', {
+
+});
+});
+
+app.get('/delete_server', function(req, res) {
+
+
+  res.render('pages/delete_server', {
+
+});
+});
+
+app.get('/delete_vendor', function(req, res) {
+
+
+  res.render('pages/delete_vendor', {
+
+});
+});
+/*
 app.get('/test', function(req, res) {
 
 
@@ -121,15 +204,7 @@ app.get('/test', function(req, res) {
 });
 });
 
-app.get('/', function(req, res) {
-  res.render('pages/home', {
-
-});
-});
-
-
-//-------------------------------------------------------------------------------------------------------------------------------
-
+*/
 //region-------------------------------------------------------------------------------------------------------------------------
 
 app.get('/region', function(req, res) {
@@ -203,11 +278,9 @@ app.delete('/deleteregion', function(req, res){
 
 });
 
-
-//----------------------------------------------------------------------------------------------------------------------
-
-
+//---------------------------------------------------------------------------------------------------------------
 //country---------------------------------------------------------------------------------------------------------------
+
 app.get('/country', function(req, res) {
   axios.get(`http://127.0.0.1:5000/country/all`)
   res.render('pages/country', {
@@ -262,8 +335,6 @@ app.put('/updatecountry', function(req, res){
   res.render('pages/submit')
 
 });
-
-
 
 app.delete('/deletecountry', function(req, res){
   var deleteCountryName = req.body.country_name;
@@ -474,19 +545,21 @@ app.get('/server', function(req, res) {
         server: server
   });
 });
-
+});
 app.post('/addserver', function(req, res){
+  var addVMName = req.body.vm_name;
   var addVMType = req.body.vm_type;
   var addServerNumber = req.body.server_number;
   var addServerLocation = req.body.server_location;
   var addVendorID = req.body.vendor_id;
 
   axios.post(`http://127.0.0.1:5000/addserver`,{
-    
-      vm_type: addVMType,
-      server_number: addServerNumber,
-      server_location: addServerLocation,
-      venodr_id: addVendorID
+    vm_name: addVMName,
+    vm_type: addVMType,
+    server_number: addServerNumber,
+    server_location: addServerLocation,
+    venodr_id: addVendorID
+
     })
     .then(function(response) {
       console.log(response.data);
@@ -495,7 +568,7 @@ app.post('/addserver', function(req, res){
   res.render('pages/submit')
 
 });
-});
+
 
 
 app.put('/updateserver', function(req, res){
@@ -548,13 +621,6 @@ app.delete('/deleteserver', function(req, res){
 //-----------------------------------------------------------------------------------------
 
 //product ---------------------------------------------------------------------------------
-app.get('/products', function(req, res) {
-
-
-  res.render('pages/products', {
-
-});
-});
 
 app.get('/product', function(req, res) {
   axios.get(`http://127.0.0.1:5000/product/all`)
@@ -888,11 +954,16 @@ app.get('/sales', function(req, res) {
 app.post('/addsales', function(req, res){
   var addEmployeeID = req.body.employee_id;
   var addProspectID = req.body.prospect_id;
+  var addSalesStatus = req.body.sales_status;
+  var addSalesAmount = req.body.sales_amount;
+  var addOpportunityName = req.body.opportunity_name;
 
   axios.post(`http://127.0.0.1:5000/addsales`,{
-    
     employee_id: addEmployeeID,
-    prospect_id: addProspectID
+    prospect_id: addProspectID,
+    sales_status: addSalesStatus,
+    sales_amount: addSalesAmount,
+    opportunity_name: addOpportunityName
 
     })
     .then(function(response) {
@@ -1257,7 +1328,6 @@ app.post('/addemployee', function(req, res){
 
 
   axios.post(`http://127.0.0.1:5000/addemployee`,{
-    
     first_name: addFirstName,
     last_name: addLastName,
     phone_number: addPhoneNumber,

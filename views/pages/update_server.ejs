@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    table, th, td {
+        border:1px solid black;
+    }
+</style>
+<body class="container">
+<body style="background-color: #DBF2FF;">
+<%- include('../partials/head'); %>
+<%- include('../partials/header'); %>
+<style>
+    .btn {
+      background-color: DodgerBlue;
+      border: none;
+      color: white;
+      padding: 12px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+    /* Darker background on mouse-over */
+    .btn:hover {
+      background-color: RoyalBlue;
+    }
+    </style>
+
+<main> 
+    
+
+    <div class="jumbotron">
+        <form action="/updateserver" method="PUT">
+            <center>
+                <h2>Update Cloud Server</h2>
+                <strong>Input Fields To Update Cloud Server Below:</strong>
+                <div class="form-group">
+                    <input type="text" id="server_id" name="server_id" class="form-control" placeholder="Server ID to Update" required autofocus>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="vm_name" name="vm_name" class="form-control" placeholder="Virtual Machine Name" required autofocus>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="vm_type" name="vm_type" class="form-control" placeholder="Virtual Machine Type" required autofocus>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="server_number" name="server_number" class="form-control" placeholder="Server Number" required autofocus>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="server_location" name="server_location" class="form-control" placeholder="Server Location" required autofocus>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="vendor_id" name="vendor_id" class="form-control" placeholder="Vendor ID" required autofocus>
+                </div>
+                         
+                <input class="btn btn-lg btn-primary btn-block" type="submit" value="Update" style="background-color:rgb(29, 184, 101)">
+            </center>
+        </form>
+    </div>
+
+<ul>
+    <a href="/"><button class="btn"><i class="fa fa-home"></i> Home</button></a>
+
+</main>
+
+
+</body>
+</body>
+</html>
