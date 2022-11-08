@@ -32,26 +32,24 @@
 <main> 
     <br>
     <div class="jumbotron" style="background-color:#A4BCE0">
-      <h6><center><strong>CLOUD AND PRODUCT</strong></center></h6>
+      <h6><center><strong>AMOUNT OF PRODUCTS USED UNDER A CLOUD SERVER</strong></center></h6>
       <table style="width: 100%;">
           <tr>
               <th>Server ID</th>
+              <th>VM Name</th>
+              <th>VM Type</th>
               <th>Server Location</th>
               <th>Server Number</th>
               <th>Total Products</th>
-              <th>VM Name</th>
-              <th>VM Type</th>
-           
           </tr>
           <% report7.forEach(function(report7) { %>
           <tr>
               <td><%= report7.server_id %></td>
+              <td><%= report7.vm_name %></td>
+              <td><%= report7.vm_type %></td> 
               <td><%= report7.server_location %></td>
               <td><%= report7.server_number %></td> 
               <td><%= report7.total_products %></td> 
-              <td><%= report7.vm_name %></td>
-              <td><%= report7.vm_type %></td> 
-          
           </tr>
           
           <% }); %>

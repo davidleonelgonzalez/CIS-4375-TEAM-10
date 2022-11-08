@@ -32,32 +32,32 @@
 <main> 
     <br>
     <div class="jumbotron" style="background-color:#A4BCE0">
-      <h6><center><strong>PROSPECT AND PRODUCT</strong></center></h6>
+      <h6><center><strong>THE PRODUCT A PROSPECT IS TRYING TO PURCHASE UNDER AN EMPLOYEE</strong></center></h6>
         <table style="width: 100%;">
           <tr>
-              <th>Airline</th>
-              <th>Category</th>
-              <th>Department</th>
               <th>Employee ID</th>
               <th>First Name</th>
               <th>Last Name</th>
-              <th>Product Description</th>
-              <th>Product Name</th>
-              <th>Product SKU</th>
+              <th>Department</th>
+              <th>Airline Prospect</th>
               <th>Prospect ID</th>
+              <th>Product SKU</th>              
+              <th>Product Name</th>              
+              <th>Product Description</th>
+              <th>Category</th>
           </tr>
           <% report6.forEach(function(report6) { %>
           <tr>
-              <td><%= report6.airline_name %></td>
-              <td><%= report6.category %></td>
-              <td><%= report6.department_name %></td>
               <td><%= report6.employee_id %></td>
               <td><%= report6.first_name %></td>
               <td><%= report6.last_name %></td> 
-              <td><%= report6.product_description %></td> 
-              <td><%= report6.product_name %></td>
+              <td><%= report6.department_name %></td>
+              <td><%= report6.airline_name %></td>
+              <td><%= report6.prospect_id %></td>
               <td><%= report6.product_sku %></td> 
-              <td><%= report6.prospect_id %></td> 
+              <td><%= report6.product_name %></td>
+              <td><%= report6.product_description %></td> 
+              <td><%= report6.category %></td> 
               
           </tr>
           

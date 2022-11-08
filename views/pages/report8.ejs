@@ -32,26 +32,26 @@
 <main> 
     <br>
     <div class="jumbotron" style="background-color:#A4BCE0">
-      <h6><center><strong>CLOUD AND VENDOR</strong></center></h6>
+      <h6><center><strong>AMOUNT OF CLOUD SERVERS PER VENDOR</strong></center></h6>
       <table style="width: 100%;">
           <tr>
-              <th>Hardware Type</th>
-              <th>Software Type</th>
-              <th>Total Servers</th>
-              <th>Vendor Email</th>
               <th>Vendor ID</th>
               <th>Vendor Name</th>
               <th>Vendor Phone</th>
+              <th>Vendor Email</th>
+              <th>Hardware Type</th>
+              <th>Software Type</th>
+              <th>Total Servers</th>
           </tr>
           <% report8.forEach(function(report8) { %>
           <tr>
-              <td><%= report8.hardware_type %></td>
-              <td><%= report8.software_type %></td>
-              <td><%= report8.total_servers %></td> 
-              <td><%= report8.vendor_email %></td> 
               <td><%= report8.vendor_id %></td>
               <td><%= report8.vendor_name %></td> 
               <td><%= report8.vendor_phone %></td> 
+              <td><%= report8.vendor_email %></td> 
+              <td><%= report8.hardware_type %></td>
+              <td><%= report8.software_type %></td>
+              <td><%= report8.total_servers %></td> 
           </tr>
           
           <% }); %>
