@@ -1351,8 +1351,8 @@ def report1():
 def report2():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     cursor = connection.cursor(dictionary=True)
-    #mysql = "SELECT DISTINCT ap.prospect_id, ap.contact_first_name, ap.contact_last_name, ap.contact_phone_number, ap.contact_email, ap.airline_name, ap.address, ap.zip_code, s.state_providence_name, c.country_name, r.region_name, cs.status_name, ap.start_date, ap.end_date FROM airline_prospect AS ap INNER JOIN state_providence AS s ON ap.state_id = s.state_id INNER JOIN country AS c ON ap.country_id = c.country_id INNER JOIN region AS r ON ap.region_id = r.region_id INNER JOIN client_status AS cs ON ap.client_status_id = cs.client_status_id ORDER BY ap.airline_name"
-    mysql = "SELECT * FROM airline_prospect"
+    mysql = "SELECT DISTINCT ap.prospect_id, ap.contact_first_name, ap.contact_last_name, ap.contact_phone_number, ap.contact_email, ap.airline_name, ap.address, ap.zip_code, s.state_providence_name, c.country_name, r.region_name, cs.status_name, ap.start_date, ap.end_date FROM airline_prospect AS ap INNER JOIN state_providence AS s ON ap.state_id = s.state_id INNER JOIN country AS c ON ap.country_id = c.country_id INNER JOIN region AS r ON ap.region_id = r.region_id INNER JOIN client_status AS cs ON ap.client_status_id = cs.client_status_id ORDER BY ap.airline_name"
+    #mysql = "SELECT * FROM airline_prospect"
     cursor.execute(mysql)
     rows = cursor.fetchall()
     report2_results = []
