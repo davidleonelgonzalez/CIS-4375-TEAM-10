@@ -243,7 +243,7 @@ app.post('/addregion', function(req, res){
 });
 
 
-app.put('/updateregion', function(req, res){
+app.all('/updateregion', function(req, res){
   var updateRegionName = req.body.region_name;
 
   axios.put(`http://127.0.0.1:5000/updateregion`,{
@@ -260,7 +260,7 @@ app.put('/updateregion', function(req, res){
 
 
 
-app.delete('/deleteregion', function(req, res){
+app.all('/deleteregion', function(req, res){
   var deleteRegionName = req.body.region_name;
 
 
@@ -319,7 +319,7 @@ app.post('/addcountry', function(req, res){
 });
 
 
-app.put('/updatecountry', function(req, res){
+app.all('/updatecountry', function(req, res){
   var updateCountryName = req.body.country_name;
   var updateRegionID = req.body.region_id;
 
@@ -336,7 +336,7 @@ app.put('/updatecountry', function(req, res){
 
 });
 
-app.delete('/deletecountry', function(req, res){
+app.all('/deletecountry', function(req, res){
   var deleteCountryName = req.body.country_name;
   var deleteRegionID = req.body.region_id
 
@@ -398,7 +398,7 @@ app.post('/addstate', function(req, res){
 });
 
 
-app.put('/updatestate', function(req, res){
+app.all('/updatestate', function(req, res){
   var updateStateName = req.body.state_providence_name;
   var updateCountryID = req.body.country_id;
 
@@ -417,7 +417,7 @@ app.put('/updatestate', function(req, res){
 
 
 
-app.delete('/deletestate', function(req, res){
+app.all('/deletestate', function(req, res){
   var deleteStateName = req.body.state_providence_name;
   var deleteCountryID = req.body.country_id
 
@@ -442,18 +442,6 @@ app.delete('/deletestate', function(req, res){
 
 //vendor--------------------------------------------------------------------------------------------------------
 
-app.get('/vendor', function(req, res) {
-  axios.get(`http://127.0.0.1:5000/vendor/all`)
-  .then((response)=>{
-      
-      var vendor = response.data;
-
-
-      res.render('pages/vendor', {
-        vendor: vendor
-  });
-});
-
 app.post('/addvendor', function(req, res){
   var addVendorName = req.body.vendor_name;
   var addVendorPhone = req.body.vendor_phone;
@@ -475,11 +463,11 @@ app.post('/addvendor', function(req, res){
 
   res.render('pages/submit')
 
-});
+
 });
 
 
-app.put('/updatevendor', function(req, res){
+app.all('/updatevendor', function(req, res){
   var updateVendorName = req.body.vendor_name;
   var updateVendorPhone = req.body.vendor_phone;
   var updateVendorEmail = req.body.vendor_email;
@@ -505,7 +493,7 @@ app.put('/updatevendor', function(req, res){
 
 
 
-app.delete('/deletevendor', function(req, res){
+app.all('/deletevendor', function(req, res){
   var deleteVendorName = req.body.vendor_name;
   var deleteVendorPhone = req.body.vendor_phone;
   var deleteVendorEmail = req.body.vendor_email;
@@ -534,18 +522,6 @@ app.delete('/deletevendor', function(req, res){
 
 //cloud server---------------------------------------------------------------------------
 
-app.get('/server', function(req, res) {
-  axios.get(`http://127.0.0.1:5000/server/all`)
-  .then((response)=>{
-      
-      var server = response.data;
-
-
-      res.render('pages/server', {
-        server: server
-  });
-});
-});
 app.post('/addserver', function(req, res){
   var addVMName = req.body.vm_name;
   var addVMType = req.body.vm_type;
@@ -558,7 +534,7 @@ app.post('/addserver', function(req, res){
     vm_type: addVMType,
     server_number: addServerNumber,
     server_location: addServerLocation,
-    venodr_id: addVendorID
+    vendor_id: addVendorID
 
     })
     .then(function(response) {
@@ -571,7 +547,7 @@ app.post('/addserver', function(req, res){
 
 
 
-app.put('/updateserver', function(req, res){
+app.all('/updateserver', function(req, res){
   var updateVMType = req.body.vm_type;
   var updateServerNumber = req.body.server_number;
   var updateServerLocation = req.body.server_location;
@@ -595,7 +571,7 @@ app.put('/updateserver', function(req, res){
 
 
 
-app.delete('/deleteserver', function(req, res){
+app.all('/deleteserver', function(req, res){
   var deleteVMType = req.body.vm_type;
   var deleteServerNumber = req.body.server_number;
   var deleteServerLocation = req.body.server_location;
@@ -633,6 +609,7 @@ app.get('/product', function(req, res) {
         product: product
   });
 });
+});
 
 app.post('/addproduct', function(req, res){
   var addProductSKU = req.body.product_sku;
@@ -659,12 +636,10 @@ app.post('/addproduct', function(req, res){
     })
 
   res.render('pages/submit')
-
-});
 });
 
 
-app.put('/updateproduct', function(req, res){
+app.all('/updateproduct', function(req, res){
   var updateProductSKU = req.body.product_sku;
   var updateProductName = req.body.product_name;
   var updateProductDescription = req.body.product_description;
@@ -693,7 +668,7 @@ app.put('/updateproduct', function(req, res){
 
 
 
-app.delete('/deleteproduct', function(req, res){
+app.all('/deleteproduct', function(req, res){
   var deleteProductSKU = req.body.product_sku;
   var deleteProductName = req.body.product_name;
   var deleteProductDescription = req.body.product_description;
@@ -756,7 +731,7 @@ app.post('/adddepartment', function(req, res){
 });
 
 
-app.put('/updatedepartment', function(req, res){
+app.all('/updatedepartment', function(req, res){
   var updateDepartmentName = req.body.department_name;
 
   axios.put(`http://127.0.0.1:5000/updatedepartment`,{
@@ -774,7 +749,7 @@ app.put('/updatedepartment', function(req, res){
 
 
 
-app.delete('/deletedepartment', function(req, res){
+app.all('/deletedepartment', function(req, res){
   var deleteDepartmentName = req.body.department_name;
 
   axios.delete(`http://127.0.0.1:5000/deletedepartment`,{
@@ -795,17 +770,6 @@ app.delete('/deletedepartment', function(req, res){
 
 //employee status------------------------------------------------------------
 
-app.get('/employee_status', function(req, res) {
-  axios.get(`http://127.0.0.1:5000/employee_status/all`)
-  .then((response)=>{
-      
-      var employee_status = response.data;
-
-
-      res.render('pages/employee_status', {
-        employee_status: employee_status
-  });
-});
 
 app.post('/addemployee_status', function(req, res){
   var addEmployeeStatus = req.body.status_name;
@@ -826,7 +790,7 @@ app.post('/addemployee_status', function(req, res){
 });
 
 
-app.put('/updateemployee_status', function(req, res){
+app.all('/updateemployee_status', function(req, res){
   var updateEmployeeStatus = req.body.status_name;
 
   axios.put(`http://127.0.0.1:5000/updateemployee_status`,{
@@ -844,7 +808,7 @@ app.put('/updateemployee_status', function(req, res){
 
 
 
-app.delete('/deleteemployee_status', function(req, res){
+app.all('/deleteemployee_status', function(req, res){
   var deleteEmployeeStatus = req.body.status_name;
 
   axios.delete(`http://127.0.0.1:5000/deleteemployee_status`,{
@@ -898,7 +862,7 @@ app.post('/addclient_status', function(req, res){
 });
 
 
-app.put('/updateclient_status', function(req, res){
+app.all('/updateclient_status', function(req, res){
   var updateClientStatus = req.body.status_name;
 
   axios.put(`http://127.0.0.1:5000/updateclient_status`,{
@@ -916,7 +880,7 @@ app.put('/updateclient_status', function(req, res){
 
 
 
-app.delete('/deleteclient_status', function(req, res){
+app.all('/deleteclient_status', function(req, res){
   var deleteClientStatus = req.body.status_name;
 
   axios.delete(`http://127.0.0.1:5000/deleteclient_status`,{
@@ -950,6 +914,7 @@ app.get('/sales', function(req, res) {
         sales: sales
   });
 });
+});
 
 app.post('/addsales', function(req, res){
   var addEmployeeID = req.body.employee_id;
@@ -972,11 +937,11 @@ app.post('/addsales', function(req, res){
 
   res.render('pages/submit')
 
-});
+
 });
 
 
-app.put('/updatesales', function(req, res){
+app.all('/updatesales', function(req, res){
   var updateEmployeeID = req.body.employee_id;
   var updateProspectID = req.body.prospect_id;
 
@@ -996,7 +961,7 @@ app.put('/updatesales', function(req, res){
 
 
 
-app.delete('/deletesales', function(req, res){
+app.get('/deletesales', function(req, res){
   var deleteEmployeeID = req.body.employee_id;
   var deleteProspectID = req.body.prospect_id;
 
@@ -1060,7 +1025,7 @@ app.post('/addprospect', function(req, res){
 
 
 
-app.put('/updateprospect', function(req, res){
+app.all('/updateprospect', function(req, res){
   var updateAirlineName = req.body.airline_name;
   var updateAddress = req.body.address;
   var updateZipCode = req.body.zip_code;
@@ -1090,7 +1055,7 @@ app.put('/updateprospect', function(req, res){
 
 
 
-app.delete('/deleteprospect', function(req, res){
+app.all('/deleteprospect', function(req, res){
   var deleteAirlineName = req.body.airline_name;
   var deleteAddress = req.body.address;
   var deleteZipCode = req.body.zip_code;
@@ -1167,7 +1132,7 @@ app.post('/addclient', function(req, res){
 
 
 
-app.put('/updateclient', function(req, res){
+app.all('/updateclient', function(req, res){
   var updateAirlineName = req.body.airline_name;
   var updateAddress = req.body.address;
   var updateZipCode = req.body.zip_code;
@@ -1177,7 +1142,7 @@ app.put('/updateclient', function(req, res){
   var updateClientStatusID = req.body.address;
   
   axios.put(`http://127.0.0.1:5000/updateclient`,{
-      id:5000,
+      client_id:5000,
       airline_name: updateAirlineName,
       address: updateAddress,
       zip_code: updateZipCode,
@@ -1197,24 +1162,12 @@ app.put('/updateclient', function(req, res){
 
 
 
-app.delete('/deleteclient', function(req, res){
-  var deleteAirlineName = req.body.airline_name;
-  var deleteAddress = req.body.address;
-  var deleteZipCode = req.body.zip_code;
-  var deleteStateID = req.body.stateID;
-  var deleteCountryID = req.body.country_id;
-  var deleteRegionID = req.body.region_id;
-  var deleteClientStatusID = req.body.address;
+app.all('/deleteclient', function(req, res){
+
 
   axios.delete(`http://127.0.0.1:5000/deleteclient`,{
-    id:5000,
-    airline_name: deleteAirlineName,
-    address: deleteAddress,
-    zip_code: deleteZipCode,
-    state_id: deleteStateID,
-    country_id: deleteCountryID,
-    region_id: deleteRegionID,
-    client_status_id: deleteClientStatusID
+    client_id:24
+  
 
     })
     .then(function(response) {
@@ -1263,7 +1216,7 @@ app.post('/addclient_employee', function(req, res){
 });
 
 
-app.put('/updateclient_employee', function(req, res){
+app.all('/updateclient_employee', function(req, res){
   var updateClientID = req.body.client_id;
   var updateEmployeeID = req.body.employee_id;
   
@@ -1284,7 +1237,7 @@ app.put('/updateclient_employee', function(req, res){
 
 
 
-app.delete('/deleteclient_employee', function(req, res){
+app.all('/deleteclient_employee', function(req, res){
 
   var deleteClientID = req.body.client_id;
   var deleteEmployeeID = req.body.employee_id;
@@ -1354,7 +1307,7 @@ app.post('/addemployee', function(req, res){
 
 
 
-app.put('/updateemployee', function(req, res){
+app.all('/updateemployee', function(req, res){
   var updateFirstName = req.body.first_name;
   var updateLastName = req.body.last_name;
   var updatePhoneNumber = req.body.phone_number;
@@ -1394,7 +1347,7 @@ app.put('/updateemployee', function(req, res){
 
 
 
-app.delete('/deleteemployee', function(req, res){
+app.all('/deleteemployee', function(req, res){
   var deleteFirstName = req.body.first_name;
   var deleteLastName = req.body.last_name;
   var deletePhoneNumber = req.body.phone_number;
@@ -1409,7 +1362,7 @@ app.delete('/deleteemployee', function(req, res){
   var deleteClientEmployeeID = req.body.client_employee_id;
 
   axios.delete(`http://127.0.0.1:5000/deleteemployee`,{
-    id:5000,
+    employee_id:5000,
     first_name: deleteFirstName,
     last_name: deleteLastName,
     phone_number: deletePhoneNumber,
