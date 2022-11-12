@@ -505,15 +505,16 @@ def addserver():
 def updateserver():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     request_data = request.get_json()
+    print(request_data)
     id_update_server = request_data['server_id']
     new_vm_name = request_data['vm_name']
     new_vm_type = request_data['vm_type']
     new_server_number = request_data['server_number']
-    new_server_location = request_data['software_location']
+    new_server_location = request_data['server_location']
     new_vendor_id = request_data['vendor_id']
     update_server = """
     UPDATE cloud_server 
-    SET vm_name = '{}', vm_type = '{}', server_number = '{}', server_location = '{}', vendor_d = '{}'
+    SET vm_name = '{}', vm_type = '{}', server_number = '{}', server_location = '{}', vendor_id = '{}'
     WHERE server_id = '{}' """.format(new_vm_name, new_vm_type, new_server_number, new_server_location, new_vendor_id, id_update_server)
     execute_query(connection, update_server)
     return "PUT REQUEST IS GOOD!"
@@ -920,7 +921,7 @@ def updatesales():
     new_opportunity_name = request_data['opportunity_name']
     update_sales = """
     UPDATE sales 
-    SET employee_id = '{}', prospect_id = '{}'
+    SET employee_id = '{}', prospect_id = '{}', sales_status = '{}', sales_amount = '{}', opportunity_name = '{}'
     WHERE sales_id = '{}' """.format(new_employee_id, new_prospect_id, new_sales_status, new_sales_amount, new_opportunity_name, id_update_sales)
     execute_query(connection, update_sales)
     return "PUT REQUEST IS GOOD!"
@@ -931,7 +932,7 @@ def deletesales():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     request_data = request.get_json()
     id_sales = request_data['sales_id']
-    delete_sales = "DELETE FROM sales WHERE sales_id = %s" % (id_sales)
+    delete_sales = """DELETE FROM sales WHERE sales_id = '{}'""".format(id_sales)
     execute_query(connection, delete_sales)
     return "DELETE REQUEST IS GOOD!"
 

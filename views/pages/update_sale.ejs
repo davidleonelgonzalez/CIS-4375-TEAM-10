@@ -29,27 +29,27 @@
     
 
     <div class="jumbotron">
-        <form action="/updatesales" method="POST">
+        <form action="/updatesales" method="PUT">
             <center>
                 <h2>Update Sale</h2>
                 <strong>Input Fields To Update A Sale Below:</strong>
                 <div class="form-group">
-                    <input type="text" id="sales_id" name="sales_id" class="form-control" placeholder="Sale ID to Update" required autofocus>
+                    <input type="int" id="sales_id" name="sales_id" class="form-control" placeholder="Sale ID to Update" required autofocus>
                 </div>
                 <div class="form-group">
-                    <input type="text" id="employee_id" name="employee_id" class="form-control" placeholder="Employee ID" required autofocus>
+                    <input type="int" id="employee_id" name="employee_id" class="form-control" placeholder="Employee ID" required autofocus>
                 </div>
                 <div class="form-group">
-                    <input type="text" id="prospect_id" name="prospect_id" class="form-control" placeholder="Prospect ID" required autofocus>
+                    <input type="int" id="prospect_id" name="prospect_id" class="form-control" placeholder="Prospect ID" required autofocus>
                 </div>
                 <div class="form-group">
-                    <input type="text" id="sales_status" name="sales_status" class="form-control" placeholder="Sale Status" autofocus>
+                    <input type="varchar" id="sales_status" name="sales_status" class="form-control" placeholder="Sale Status" autofocus>
                 </div>
                 <div class="form-group">
-                    <input type="text" id="sales_amount" name="sales_amount" class="form-control" placeholder="Sale Amount"  autofocus>
+                    <input type="varchar" id="sales_amount" name="sales_amount" class="form-control" placeholder="Sale Amount"  autofocus>
                 </div>
                 <div class="form-group">
-                    <input type="text" id="opportunity_name" name="opportunity_name" class="form-control" placeholder="Opportunity Name" required autofocus>
+                    <input type="varchar" id="opportunity_name" name="opportunity_name" class="form-control" placeholder="Opportunity Name" required autofocus>
                 </div>
                       
                 <input class="btn btn-lg btn-primary btn-block" type="submit" value="Update" style="background-color:rgb(29, 184, 101)">

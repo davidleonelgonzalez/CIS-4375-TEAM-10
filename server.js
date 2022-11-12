@@ -548,18 +548,21 @@ app.post('/addserver', function(req, res){
 
 
 app.all('/updateserver', function(req, res){
+  var updateServerID = req.body.server_id;
+  var updateServerName = req.body.vm_name;
   var updateVMType = req.body.vm_type;
   var updateServerNumber = req.body.server_number;
   var updateServerLocation = req.body.server_location;
   var updateVendorID = req.body.vendor_id;
-
+  console.log(updateServerID)
 
   axios.put(`http://127.0.0.1:5000/updateserver`,{
-      id:5000,
-      vm_type: updateVMType,
-      server_number: updateServerNumber,
-      server_location: updateServerLocation,
-      venodr_id: updateVendorID
+    server_id: updateServerID,
+    vm_name: updateServerName,
+    vm_type: updateVMType,
+    server_number: updateServerNumber,
+    server_location: updateServerLocation,
+    vendor_id: updateVendorID
     })
     .then(function(response) {
       console.log(response.data);
@@ -711,6 +714,7 @@ app.get('/department', function(req, res) {
         department: department
   });
 });
+});
 
 app.post('/adddepartment', function(req, res){
   var addDepartmentName = req.body.department_name;
@@ -728,7 +732,7 @@ app.post('/adddepartment', function(req, res){
   res.render('pages/submit')
 
 });
-});
+
 
 
 app.all('/updatedepartment', function(req, res){
@@ -841,6 +845,7 @@ app.get('/client_status', function(req, res) {
         client_status: client_status
   });
 });
+});
 
 app.post('/addclient_status', function(req, res){
   var addClientStatus = req.body.status_name;
@@ -858,7 +863,7 @@ app.post('/addclient_status', function(req, res){
   res.render('pages/submit')
 
 });
-});
+
 
 
 app.all('/updateclient_status', function(req, res){
@@ -940,34 +945,38 @@ app.post('/addsales', function(req, res){
 });
 
 
-app.all('/updatesales', function(req, res){
-  var updateEmployeeID = req.body.employee_id;
-  var updateProspectID = req.body.prospect_id;
+// app.all('/updatesales', function(req, res){
+//   var updateSalesID = req.body.sales_id;
+//   var updateEmployeeID = req.body.employee_id;
+//   var updateProspectID = req.body.prospect_id;
+//   var updateSalesStatus = req.body.sales_status;
+//   var updateSalesAmount = req.body.sales_amount;
+//   var updateOpportunityName = req.body.opportunity_name;
 
-  axios.put(`http://127.0.0.1:5000/updatesales`,{
-      id:5000,
-      employee_id: updateEmployeeID,
-      prospect_id: updateProspectID
+//   axios.put(`http://127.0.0.1:5000/updatesales`,{
+//       sales_id: updateSalesID,
+//       employee_id: updateEmployeeID,
+//       prospect_id: updateProspectID,
+//       sales_status: updateSalesStatus,
+//       sales_amount: updateSalesAmount,
+//       opportunity_name: updateOpportunityName
   
-    })
-    .then(function(response) {
-      console.log(response.data);
-    })
+//     })
+//     .then(function(response) {
+//       console.log(response.data);
+//     })
 
-  res.render('pages/submit')
+//   res.render('pages/submit')
 
-});
+// });
 
 
 
-app.get('/deletesales', function(req, res){
-  var deleteEmployeeID = req.body.employee_id;
-  var deleteProspectID = req.body.prospect_id;
+app.all('/deletesales', function(req, res){
+  var deleteSalesID = req.body.sales_id;
 
   axios.delete(`http://127.0.0.1:5000/deletesales`,{
-    id:5000,
-    employee_id: deleteEmployeeID,
-    prospect_id: deleteProspectID
+    sales_id: deleteSalesID
 
     })
     .then(function(response) {
@@ -1193,6 +1202,7 @@ app.get('/client_employee', function(req, res) {
         client_employee: client_employee
   });
 });
+});
 
 app.post('/addclient_employee', function(req, res){
   var addClientID = req.body.client_id;
@@ -1212,7 +1222,7 @@ app.post('/addclient_employee', function(req, res){
   res.render('pages/submit')
 
 });
-});
+
 
 
 app.all('/updateclient_employee', function(req, res){
