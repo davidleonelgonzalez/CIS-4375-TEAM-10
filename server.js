@@ -15,7 +15,7 @@ app.set('view engine', 'ejs');
 var publicDir = require('path').join(__dirname,'/public'); 
 app.use(express.static(publicDir));
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 
 //home----------------------------------------------------------------------------------------------------------------------------
 app.get('/', function(req, res) {
@@ -1356,37 +1356,12 @@ app.all('/updateemployee', function(req, res){
 
 
 
-app.all('/deleteemployee', function(req, res){
-  var deleteFirstName = req.body.first_name;
-  var deleteLastName = req.body.last_name;
-  var deletePhoneNumber = req.body.phone_number;
-  var deleteEmail = req.body.email;
-  var deleteAddress = req.body.address;
-  var deleteZipCode = req.body.zip_code;
-  var deleteStateID = req.body.stateID;
-  var deleteCountryID = req.body.country_id;
-  var deleteRegionID = req.body.region_id;
-  var deleteDepartmentID = req.body.department_id;
-  var deleteEmployeeStatusID = req.body.employee_status_id;
-  var deleteClientEmployeeID = req.body.client_employee_id;
+app.get('/deleteemployee', function(req, res){
+  var deleteEmployeeID = {employee_id: req.body.employee_id}
 
-  axios.delete(`http://127.0.0.1:5000/deleteemployee`,{
-    employee_id:5000,
-    first_name: deleteFirstName,
-    last_name: deleteLastName,
-    phone_number: deletePhoneNumber,
-    email: deleteEmail,
-    address: deleteAddress,
-    zip_code: deleteZipCode,
-    state_id: deleteStateID,
-    country_id: deleteCountryID,
-    region_id: deleteRegionID,
-    department_id: deleteDepartmentID,
-    employee_status_id: deleteEmployeeStatusID,
-    client_employee_id: deleteClientEmployeeID
-    })
+  axios.delete(`http://127.0.0.1:5000/deleteemployee`,{data:{employee_id: deleteEmployeeID}})
     .then(function(response) {
-      console.log(response.data);
+      console.log(deleteEmployeeID);
     })
 
 

@@ -1339,8 +1339,9 @@ def updateemployee():
 def deleteemployee():
     connection = create_connection("cis4375.cgatajvkx1pb.us-east-1.rds.amazonaws.com", "team10", "Strawin_cis4375!", "cis4375db")
     request_data = request.get_json()
+    print(request_data)
     id_employee = request_data['employee_id']
-    delete_employee = "DELETE FROM employee WHERE employee_id = %s" % (id_employee)
+    delete_employee = "DELETE FROM employee WHERE employee_id = '{}'".format(id_employee)
     execute_query(connection, delete_employee)
     return "DELETE REQUEST IS GOOD!"
 
